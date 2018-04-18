@@ -13,7 +13,7 @@ public class AltServiceImpl implements AltService{
 	@Resource
 	private AltDao altDao;
 	
-	//根据id查找实体
+	//根据id查找实体 
 	@Override
 	public Alt findById(Integer id) {
 		return altDao.findById(id);
