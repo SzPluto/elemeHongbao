@@ -39,7 +39,4 @@ public class Alt {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNum = phoneNumber;
 	}
-    
-
-    
 }

@@ -19,4 +19,9 @@ public interface AltDao {
 	 * 修改手机号
 	 */
 	public void changePhoneNum(Integer id, String phoneNum);
+	
+	/**
+	 * 查找最大id
+	 */
+	public Integer findMaxId();
 }

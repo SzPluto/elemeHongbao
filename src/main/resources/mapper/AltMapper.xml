@@ -28,4 +28,8 @@
 	<update id="changePhoneNum" >
 		update hb_alt set phoneNum = 1 where id = 1
 	</update>
+	
+	<select id="findMaxId">
+		select max(id) from hb_alt
+	</select>
 </mapper>

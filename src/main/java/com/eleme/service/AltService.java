@@ -1,7 +1,5 @@
 package com.eleme.service;
 
-import java.io.IOException;
-
 import com.eleme.entity.Alt;
 
 public interface AltService {
@@ -21,24 +19,22 @@ public interface AltService {
 	public void addUseNumber(Integer id);
 	
 	/**
-	 * 修改手机号
-	 * 
+	 * 查找最大id
 	 * @return
 	 */
-	public void changePhoneNum(Integer id,String phoneNum) throws IOException;
+	public Integer findMaxId();
 	
 	/**
-	 * 领红包方法
-	 * 
+	 * 根据id查询实体获得Avatar
+	 * @param id
 	 * @return
 	 */
-	int hongbao(String url, String avatar, String elemeKey, Integer id, String phoneNum) throws IOException;
+	public String getAvatar(Integer id);
 	
-	/**
-	 * 领大红包方法
+	/**根据id查询实体获得ElemeKey
 	 * 
+	 * @param id
 	 * @return
 	 */
-	public  String getHongbao(String phoneNum, String url) throws IOException;
-	
+	public String getElemeKey(Integer id);
 }
