@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 响应式 meta标签 -->
+   		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/hongbao.css">
+		<title>饿了么一键红包领取</title>
+	</head>
+	<!-- 背景图片 -->
+	<body style="background-image:url(images/background.jpg);">	
+		<div class=".container-fluid" align="center">
+			<h1 style="margin-top:7%;color:#463f39;font-size:55px;font-family:Sans-serif" >饿了么一键红包</h1>
+			<div class="highlight" style="max-width:600px;margin-top:3%">
+				<form  method="POST" onsubmit= "return checkForm()" action="/getHongbao" target="nm_iframe" >
+					<div class="input-group mb-3" >
+		 				<div class="input-group-prepend" >
+		    				<span class="input-group-text" id="basic-addon1">Phone</span>
+		  				</div>
+		 				<input id="phone" oninput="checkPhone()" type="text" class="form-control" placeholder="输入需要领红包的手机号"  name="phoneNum" >
+					</div>
+					<div class="input-group mb-3" style="height:160px">
+						<div class="input-group-prepend">
+							<span class="input-group-text">&nbsp;&nbsp;URL&nbsp;&nbsp;</span>
+						</div>
+						<input id="url" oninput="checkUrl()" type="text" class="form-control " placeholder="输入红包链接" name="url">			
+					</div>
+					<div align="left">
+					<a tabindex="0" class="btn btn btn-danger " data-placement="left" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="请注意" 
+					data-content="1.要领最大红包的手机号，切记不要提前打开红包链接，会领到小红包，无法再领最大红包。
+					<br><br>2.饿了么红包链接开头为：https://h5.ele.me/hongbao/ <br>链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
+					<br><br>3.注意：无法领取差一个就是大红包的情况。例如：第七个是最大红包，已经有六个人领了，此时不要使用领取功能。">注意事项</a>
+					<input type="submit"  class="btn btn-dark float-right" value="领取红包">
+					</div>	
+					<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>  
+				</form>	
+			</div>
+		</div>
+		<div align="center">
+			<br>
+			<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
+			<h6 style="color:#463f39">由于饿了么红包可能出现的BUG，本站不保证100%领取大红包</h6>
+		</div>
+		
+   		 <!-- jQuery,Popper JS,Bootstrap JS -->
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script>
+			//Popover插件加载
+			$(function () { 
+				$("[data-toggle='popover']").popover();
+			});
+			
+			//判断手机号格式
+			function checkPhone(){
+				var v = document.getElementById("phone").value;
+				if(!isNaN(v) && v.length == 11 && v[0]==1){	//如果是数字并且长度等于11并且第一个数字为1
+					normalColor("phone");
+					return true;
+				}else if(v == ""){
+					normalColor("phone");
+					return false;
+				}else{
+					warningColor("phone");
+					return false;
+				}	
+			}
+			
+			//判断url格式
+			function checkUrl(){
+				var v = document.getElementById("url").value;
+				var reg1 = /lucky_number/;
+				var reg2 = /https:\/\/h5.ele.me\/hongbao\//;
+				if((reg1.test(v) && reg2.test(v))){
+					normalColor("url");
+					return true;
+				}else if(v == ""){
+					normalColor("url");
+					return false;
+				}else{
+					warningColor("url");
+					return false;
+				}
+			}
+			
+			//格式错误显示颜色
+			function warningColor(id){
+				document.getElementById(id).style.backgroundColor = "#dd3444";
+				document.getElementById(id).style.color = "white";
+			}
+			
+			//格式正确显示颜色
+			function normalColor(id){
+				document.getElementById(id).style.backgroundColor = "white";
+				document.getElementById(id).style.color = "#6c757d";
+			}
+			
+			//表单检测
+			function checkForm(){
+				var urltip = checkUrl();
+				var phonetip = checkPhone();
+				if(!urltip || !phonetip){
+					alert("message");
+				}
+				return urltip && phonetip;
+			}
+		</script>
+	</body>
+</html>

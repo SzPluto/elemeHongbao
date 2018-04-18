@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eleme.dao.AltDao">
+	<resultMap type="com.eleme.entity.Alt" id="AltResult">
+		<result property="id" column="id"/>
+		<result property="avatar" column="avatar"/>
+		<result property="elemeKey" column="elemeKey"/>
+		<result property="useNum" column="useNum"/>
+		<result property="phoneNum" column="phoneNum"/>
+	</resultMap>
+	
+	<parameterMap id="Alt" type="com.eleme.entity.Alt"/>
+	
+	<sql id="Alt_Column_List">
+		id, avatar, elemeKey, useNum,phoneNum
+	</sql>
+	
+	<select id="findById" resultMap="AltResult" parameterType="Integer">
+		select
+		<include refid="Alt_Column_List" />
+		from hb_alt where id=#{id}
+	</select>
+	
+	<update id="addUseNum">
+		update hb_alt set useNum = useNum + 1 where id=#{id}
+	</update>
+	
+	<update id="changePhoneNum" >
+		update hb_alt set phoneNum = 1 where id = 1
+	</update>
+</mapper>
