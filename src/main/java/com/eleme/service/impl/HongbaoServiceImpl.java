@@ -151,7 +151,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 		return rpn;
 	}
 	
-	/**
+	/*
 	 * 重置所有手机号
 	 */
 	public void retrunPhone(int maxId) throws IOException{
