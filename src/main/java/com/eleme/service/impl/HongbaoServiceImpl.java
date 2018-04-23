@@ -33,6 +33,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	private AltDao altDao;
 	
 	int id = 1;
+	
 	//领红包方法
 	@Override
 	public int hongbao(String url,String avatar,String elemeKey,Integer id,String phoneNum) throws IOException{
@@ -65,22 +66,19 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        
 	        //识别已领取红包数量
 	        int count = StringUtils.countMatches(responseBody,"\"sns_username\"");
-
-	        //识别第几个为大红包
-	        String luckyNum = url;
-	        String regLuckyNum = "lucky_number=[0-9]+";      //匹配lucky_number
-	        Pattern pLuckyNum = Pattern.compile(regLuckyNum);
-	        Matcher mLuckyNum = pLuckyNum.matcher(luckyNum);
-	        while(mLuckyNum.find()){
-	        	luckyNum=(mLuckyNum.group());
-	        }
-	        luckyNum = luckyNum.substring(13, luckyNum.length());	//substring()方法去除前13个字符，也就是"lucky_number="，剩下就是目标红包数
+	        
+	        String luckyNum = getLuckyNum(url);	 //识别第几个为大红包
+	        
+	        //识别本次领取红包金额
+	        String hongbaoSum = getHongbaoSum(responseBody);
+	        
 	        System.out.println(responseBody);
 	        System.out.println("目标红包数:"+Integer.parseInt(luckyNum));
 	        System.out.println("已领红包数:"+count);
 	        System.out.println("剩余红包数:"+(Integer.parseInt(luckyNum) - count));
 	        System.out.println("id="+id);
 	        System.out.println("手机号为="+phoneNum);
+	        System.out.println("本次红包金额="+hongbaoSum);
             System.out.println("--------------------------------------------");
 	        return Integer.parseInt(luckyNum) - count;	//返回还需要领取的次数
 		}
@@ -90,6 +88,12 @@ public class HongbaoServiceImpl implements HongbaoService {
 	@Override
 	public  String getHongbao(String phoneNum,String url) throws IOException{
 		int residueNum = 3;	//剩余需要次数
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} 
 		while(residueNum>0){
 			residueNum = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());
 	        id++;
@@ -110,6 +114,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 		System.out.println("大红包已被领取！");
 		return "大红包已被领取！";
 	}
+	
 	
 	//修改手机号方法
 	@Override
@@ -151,9 +156,8 @@ public class HongbaoServiceImpl implements HongbaoService {
 		return rpn;
 	}
 	
-	/*
-	 * 重置所有手机号
-	 */
+	
+	//重置所有手机号
 	public void retrunPhone(int maxId) throws IOException{
 		while(true){
 			changePhoneNum(id,randomPhoneNum());
@@ -162,5 +166,42 @@ public class HongbaoServiceImpl implements HongbaoService {
 				return;
 			}
 		}
+	}
+	
+	
+	//识别第几个为大红包
+	public String getLuckyNum(String url){
+		String luckyNum = url;
+        String regLuckyNum = "lucky_number=[0-9]+";      //匹配lucky_number
+        Pattern pLuckyNum = Pattern.compile(regLuckyNum);
+        Matcher mLuckyNum = pLuckyNum.matcher(luckyNum);
+        if(mLuckyNum.find()){
+            luckyNum = mLuckyNum.group();
+        }
+        luckyNum = luckyNum.substring(13, luckyNum.length());	//substring()方法去除前13个字符，也就是"lucky_number="，剩下就是目标红包数
+        return luckyNum;
+	}
+	
+	
+	//识别本次领取红包金额
+	public String getHongbaoSum(String responseBody){
+		String hongbaoSum1 = responseBody;		//正则第一部分
+        String regHongbaoSum1 = "\"amount\":[0-9,.]+,\"hongbao_variety\":\\[\"全品类\"\\]";
+        Pattern pHongbaoSum1 = Pattern.compile(regHongbaoSum1);
+        Matcher mHongbaoSum1 = pHongbaoSum1.matcher(hongbaoSum1);
+        if(mHongbaoSum1.find()){
+        	hongbaoSum1 = (mHongbaoSum1.group());
+        }else{
+        	return "该手机号已领取过此红包或此红包已被领完";
+        }
+        
+        String hongbaoSum2 = hongbaoSum1;		//正则第二部分
+        String regHongbaoSum2 = "(?<!\\d|^)([1-9]\\d+|\\d)(\\.\\d+)?((?!\\d)|$)";
+        Pattern pHongbaoSum2 = Pattern.compile(regHongbaoSum2);
+        Matcher mHongbaoSum2 = pHongbaoSum2.matcher(hongbaoSum2);
+        if(mHongbaoSum2.find()){
+        	hongbaoSum2 = (mHongbaoSum2.group());
+        }
+        return hongbaoSum2;
 	}
 }
