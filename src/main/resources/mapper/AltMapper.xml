@@ -29,7 +29,7 @@
 		update hb_alt set phoneNum = #{phoneNum} where id = #{id}
 	</update>
 	
-	<select id="findMaxId">
+	<select id="findMaxId" resultType="Integer">
 		select max(id) from hb_alt
 	</select>
 </mapper>

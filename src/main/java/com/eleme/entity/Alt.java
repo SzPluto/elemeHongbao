@@ -27,16 +27,16 @@ public class Alt {
 	public void setElemeKey(String elemeKey) {
 		this.elemeKey = elemeKey;
 	}
-	public int getUseNumber() {
+	public int getUseNum() {
 		return useNum;
 	}
-	public void setUseNumber(int useNumber) {
+	public void setUseNum(int useNumber) {
 		this.useNum = useNumber;
 	}
-	public String getPhoneNumber() {
+	public String getPhoneNum() {
 		return phoneNum;
 	}
-	public void setPhoneNumber(String phoneNumber) {
+	public void setPhoneNum(String phoneNumber) {
 		this.phoneNum = phoneNumber;
 	}
 }

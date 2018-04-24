@@ -28,7 +28,7 @@ public class AltServiceImpl implements AltService{
 	//查找最大id
 	@Override
 	public Integer findMaxId() {
-		return null;
+		return altDao.findMaxId();
 	}
 	
 	//根据id查询实体获得Avatar
@@ -42,4 +42,11 @@ public class AltServiceImpl implements AltService{
 	public String getElemeKey(Integer id){
 		return altDao.findById(id).getElemeKey();
 	}
+
+	//根据id查询实体获得UseNum
+	@Override
+	public Integer getUseNum(Integer id) {
+		return altDao.findById(id).getUseNum();
+	}
+	
 }

@@ -25,12 +25,14 @@ import com.eleme.service.HongbaoService;
 
 @Service("hongbaoService")
 public class HongbaoServiceImpl implements HongbaoService {
+
 	
 	@Autowired
     private AltService altService;
 	
 	@Resource
 	private AltDao altDao;
+	
 	
 	int id = 1;
 	
@@ -95,9 +97,21 @@ public class HongbaoServiceImpl implements HongbaoService {
 			e.printStackTrace();
 		} 
 		while(residueNum>0){
+			if(id > altService.findMaxId()){
+				if(altService.getUseNum(altService.findMaxId()) >= 5){
+					return "后台次数已被耗尽";
+				}
+				id = 1;
+			}
 			residueNum = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());
 	        id++;
 	        while(residueNum == 1){
+				if(id > altService.findMaxId()){
+					if(altService.getUseNum(altService.findMaxId()) >= 5){
+						return "后台次数已被耗尽";
+					}
+					id = 1;
+				}
 	        	changePhoneNum(id,phoneNum);
 				residueNum = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);
 				changePhoneNum(id,randomPhoneNum());

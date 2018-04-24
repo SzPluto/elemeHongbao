@@ -37,4 +37,11 @@ public interface AltService {
 	 * @return
 	 */
 	public String getElemeKey(Integer id);
+	
+	/**
+	 * 根据id查询实体获得UseNum
+	 * @param id
+	 * @return
+	 */
+	public Integer getUseNum(Integer id);
 }
