@@ -22,9 +22,9 @@ public class HongbaoController {
 	@Autowired
 	private HongbaoService hongbaoService;
 
-    @RequestMapping(value = "/" )  
+    @RequestMapping(value = "/hongbao" )  
     public String index() throws IOException{  
-        return "/hongbao";  
+        return "hongbao";  
     } 
     
 	@RequestMapping(value = "/getHongbao", method = RequestMethod.POST)
@@ -38,6 +38,6 @@ public class HongbaoController {
     @RequestMapping(value = "/returnPhone" )  
     public String returnPhone() throws IOException{  
     	hongbaoService.retrunPhone(32);
-        return "/hongbao";  
+        return "hongbao";  
     } 
 }

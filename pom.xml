@@ -70,6 +70,37 @@
 	      <version>2.6</version>  
 	      <scope>provided</scope>  
 	    </dependency>
+	    <!-- httpClient -->
+	    <dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.5.5</version>
+		</dependency>
+	    <dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient-win</artifactId>
+		    <version>4.5.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient-cache</artifactId>
+		    <version>4.5.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpmime</artifactId>
+		    <version>4.5.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.10</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>1.2</version>
+		</dependency>
 
 	</dependencies>
 
@@ -80,6 +111,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		
 	</build>
 
 

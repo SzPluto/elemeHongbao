@@ -26,7 +26,7 @@
 	</update>
 	
 	<update id="changePhoneNum" >
-		update hb_alt set phoneNum = 1 where id = 1
+		update hb_alt set phoneNum = #{phoneNum} where id = #{id}
 	</update>
 	
 	<select id="findMaxId">

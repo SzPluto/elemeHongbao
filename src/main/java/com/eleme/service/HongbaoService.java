@@ -2,6 +2,10 @@ package com.eleme.service;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
+
+import com.eleme.dao.AltDao;
+
 public interface HongbaoService {
 	
 	/**
