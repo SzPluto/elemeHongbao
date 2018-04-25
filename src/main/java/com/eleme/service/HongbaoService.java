@@ -1,6 +1,7 @@
 package com.eleme.service;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -13,7 +14,7 @@ public interface HongbaoService {
 	 * 
 	 * @return
 	 */
-	public int hongbao(String url, String avatar, String elemeKey, Integer id, String phoneNum) throws IOException;
+	public Object[] hongbao(String url, String avatar, String elemeKey, Integer id, String phoneNum) throws IOException;
 	
 	/**
 	 * 领大红包方法
@@ -41,5 +42,13 @@ public interface HongbaoService {
 	 * @return
 	 */
 	public String randomPhoneNum();
+	
+	/**
+	 * 插入领取记录
+	 * @param i
+	 * @param string
+	 * @param j
+	 */
+	public void insertRecord(String money, String string, int succee);
 	
 }

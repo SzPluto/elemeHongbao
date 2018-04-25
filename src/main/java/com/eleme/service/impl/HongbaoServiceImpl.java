@@ -1,6 +1,8 @@
 package com.eleme.service.impl;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eleme.dao.AltDao;
+import com.eleme.dao.RecordDao;
 import com.eleme.service.AltService;
 import com.eleme.service.HongbaoService;
 
@@ -29,16 +32,21 @@ public class HongbaoServiceImpl implements HongbaoService {
 	
 	@Autowired
     private AltService altService;
-	
 	@Resource
 	private AltDao altDao;
-	
+	@Resource
+	private RecordDao recordDao;
 	
 	int id = 1;
 	
-	//领红包方法
+	/*
+	 * 领红包方法
+	 * return Object[0]  还需要领取的次数
+	 * return Object[1]  如果领取到大红包,返回红包金额 。如果不是大红包,返回0
+	 */
+
 	@Override
-	public int hongbao(String url,String avatar,String elemeKey,Integer id,String phoneNum) throws IOException{
+	public Object[] hongbao(String url,String avatar,String elemeKey,Integer id,String phoneNum) throws IOException{
 		try (CloseableHttpClient httpClient = HttpClients.createDefault()){
 			String sn = url;
 			String regSn = "&sn=[0-9,a-z]+";
@@ -82,7 +90,8 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        System.out.println("手机号为="+phoneNum);
 	        System.out.println("本次红包金额="+hongbaoSum);
             System.out.println("--------------------------------------------");
-	        return Integer.parseInt(luckyNum) - count;	//返回还需要领取的次数
+            Object[] rt = {Integer.parseInt(luckyNum) - count,hongbaoSum};
+	        return rt;	//返回还需要领取的次数
 		}
 	}
 	
@@ -90,6 +99,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	@Override
 	public  String getHongbao(String phoneNum,String url) throws IOException{
 		int residueNum = 3;	//剩余需要次数
+		Object[] rt = new Object[2];
 		try {
 			Thread.sleep(1);
 		} catch (InterruptedException e) {
@@ -99,32 +109,40 @@ public class HongbaoServiceImpl implements HongbaoService {
 		while(residueNum>0){
 			if(id > altService.findMaxId()){
 				if(altService.getUseNum(altService.findMaxId()) >= 5){
+					insertRecord("0", phoneNum, 0);
 					return "后台次数已被耗尽";
 				}
 				id = 1;
 			}
-			residueNum = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());
+			rt = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());
+			residueNum = (int) rt[0];
 	        id++;
 	        while(residueNum == 1){
 				if(id > altService.findMaxId()){
 					if(altService.getUseNum(altService.findMaxId()) >= 5){
+						insertRecord("0", phoneNum, 0);
 						return "后台次数已被耗尽";
 					}
 					id = 1;
 				}
 	        	changePhoneNum(id,phoneNum);
-				residueNum = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);
+	        	rt = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);
+	        	residueNum = (int) rt[0];
 				changePhoneNum(id,randomPhoneNum());
 		        id++;	//每次领取后id+1
 		        if(residueNum == 0){
+		        	insertRecord((String) rt[1],phoneNum,1);
 		        	System.out.println("红包领取成功");
-					return "红包领取成功";
+					return ("红包领取成功,红包金额为："+(String) rt[1]);
 		        }else if(residueNum < 0){
+		        	insertRecord("0", phoneNum, 0);
 		        	System.out.println("发生未知错误！");
 					return "发生未知错误！";
 		        }
 	        }
 	    }
+		insertRecord("0", phoneNum, 0);
+		insertRecord("0", phoneNum, 0);
 		System.out.println("大红包已被领取！");
 		return "大红包已被领取！";
 	}
@@ -200,13 +218,13 @@ public class HongbaoServiceImpl implements HongbaoService {
 	//识别本次领取红包金额
 	public String getHongbaoSum(String responseBody){
 		String hongbaoSum1 = responseBody;		//正则第一部分
-        String regHongbaoSum1 = "\"amount\":[0-9,.]+,\"hongbao_variety\":\\[\"全品类\"\\]";
+        String regHongbaoSum1 = "\"amount\":[0-9,.]+,\"expire_date\"";
         Pattern pHongbaoSum1 = Pattern.compile(regHongbaoSum1);
         Matcher mHongbaoSum1 = pHongbaoSum1.matcher(hongbaoSum1);
         if(mHongbaoSum1.find()){
         	hongbaoSum1 = (mHongbaoSum1.group());
         }else{
-        	return "该手机号已领取过此红包或此红包已被领完";
+        	return "不是大红包";
         }
         
         String hongbaoSum2 = hongbaoSum1;		//正则第二部分
@@ -218,4 +236,11 @@ public class HongbaoServiceImpl implements HongbaoService {
         }
         return hongbaoSum2;
 	}
+	
+	//提交领取信息方法
+	public void insertRecord(String money,String phoneNum,int succeed){
+		Date time= new java.sql.Timestamp(new java.util.Date().getTime());
+		recordDao.insertRecord(money,phoneNum,succeed,time);
+	}
+	
 }
