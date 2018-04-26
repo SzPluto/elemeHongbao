@@ -49,6 +49,6 @@ public interface HongbaoService {
 	 * @param string
 	 * @param j
 	 */
-	public void insertRecord(String money, String string, int succee);
+	public void insertRecord(String money, String string, int succee,String remakes);
 	
 }

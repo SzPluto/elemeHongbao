@@ -36,14 +36,13 @@
 						<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
 						<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">注意事项
 						</a>
-						<input type="button"  class="btn btn-dark float-right" value="领取红包" onclick="getHongbao()" id="get"/>
+						<input type="button"  class="btn btn-dark float-right" value="领取红包" onclick="getHongbao2()" id="get"/>
 					</div>
 				</form>	
 			</div>
 		</div>
 		<div align="center">
-			<h3 style="color:#463f39">不会用就来问我<br>出现问题请第一时间告诉我</h3>
-			<p style="font-size:5px">如果你想给我贡献qq小号我可以首页给你做个横幅锦旗啥的<br>不要宣传,不要宣传,不要宣传,后台就那么点次数,你们自己偷偷用就好了<br>没办法就是喜欢写点有的没的</p>
+			<h4 style="color:#dd3444">请务必按需领取<br>浪费后台次数者将被限制领取</h4>
 			<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
 			<h6 style="color:#463f39">由于饿了么红包可能出现的BUG，本站不保证100%领取大红包</h6>
 		</div>
@@ -59,6 +58,11 @@
 			});
 			
 			//ajax提交表单
+			function getHongbao2(){
+				$('#get').attr("disabled",true);  
+				getHongbao();
+			}
+			
 			function getHongbao(){
 				if(checkForm()){
 					var form = new FormData(document.getElementById("formHongbao"));

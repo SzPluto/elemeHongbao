@@ -22,7 +22,7 @@ public class HongbaoController {
 	@Autowired
 	private HongbaoService hongbaoService;
 
-    @RequestMapping(value = "/hongbao" )  
+    @RequestMapping(value = "/" )  
     public String index() throws IOException{  
         return "hongbao";  
     } 
