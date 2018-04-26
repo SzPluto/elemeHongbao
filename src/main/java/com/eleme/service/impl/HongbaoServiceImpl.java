@@ -43,12 +43,6 @@ public class HongbaoServiceImpl implements HongbaoService {
 	//领大红包方法
 	@Override
 	public  String getHongbao(String phoneNum,String url) throws IOException{
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			// TODO 自动生成的 catch 块
-			e1.printStackTrace();
-		}
 		Object[] residueNumAndMoney ={3,0};  //rt[0]为还需要领取的次数                  rt[1]为领取到的红包金额
 		while((int) residueNumAndMoney[0]>0){		//进行第一次判断，如果剩余需要领取次数小于等于0则表示红包已被领取，返回失败提示，否则只要剩余需要领取次数大于0则一直运行，
 			//首先判断id是否合法
