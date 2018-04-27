@@ -68,7 +68,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 				changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号
 		        id++;	//每次领取后id+1
 		        if((int) residueNumAndMoney[0] >= 1){		//手机已经领取过此红包 或 你的手机号今日领取次数已达上限
-		        	insertRecord((String)residueNumAndMoney[1],phoneNum,1,"手机已领取过或手机上限");
+		        	insertRecord((String)residueNumAndMoney[1],phoneNum,0,"手机已领取过或手机上限");
 		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，本红包下一个为大红包，可以发给你的朋友领");
 		        }
 		        if((int) residueNumAndMoney[0] == 0){		//至此，红包领取成功，返回成功信息
@@ -83,9 +83,14 @@ public class HongbaoServiceImpl implements HongbaoService {
 		        }
 	        }
 	    }
+		if((int) residueNumAndMoney[0] == -400){
+			insertRecord("0", phoneNum, 0,"恶意的链接");
+        	System.out.println("malicious url!");
+			return "请勿提交恶意链接:)";
+		}
 		insertRecord("0", phoneNum, 0,"此红包大红包已被领取");
 		System.out.println("not have bigHongbao!");
-		return "此红包大红包已被领取！";
+		return "此红包大红包已被领取!";
 	}
 	
 	/*
@@ -140,7 +145,12 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        System.out.println("money:"+hongbaoSum);
             System.out.println("--------------------------------------------");
             Object[] rt = {Integer.parseInt(luckyNum) - count,hongbaoSum};
-	        return rt;	//返回还需要领取的次数
+            Object[] rtFalse = {-400,0};   //防止恶意提交链接
+            if(count == 0){
+            	return rtFalse;
+            }else{
+            	return rt;
+            }
 		}
 	}
 	

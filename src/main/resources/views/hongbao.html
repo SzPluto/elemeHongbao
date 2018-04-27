@@ -42,7 +42,7 @@
 			</div>
 		</div>
 		<div align="center">
-			<h4 style="color:#dd3444">请务必按需领取<br>浪费后台次数者将被限制领取</h4>
+			<h4 style="color:#dd3444">请务必按需领取<br>浪费后台次数者将被限制领取<br>喜欢就会放纵<br>但爱，就是克制</h4>
 			<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
 			<h6 style="color:#463f39">由于饿了么红包可能出现的BUG，本站不保证100%领取大红包</h6>
 			<input hidden id="check" value="0"></input>
@@ -64,8 +64,8 @@
 			}
 			
 			function getHongbao(){
-				if(checkForm() && document.getElementById("check").value == "0"){
-					document.getElementById("check").value = "1";
+				if(checkForm() && document.getElementById("check").value == "0"){		//通过检测value的办法防止重复点击
+					document.getElementById("check").value = "1";		//value
 					var form = new FormData(document.getElementById("formHongbao"));
 		            var xmlHttp = new XMLHttpRequest();
 		            xmlHttp.open("post", "/getHongbao", false);
@@ -76,7 +76,7 @@
 		            }
 		            xmlHttp.send(form);
 		            document.getElementById("check").value = "0";
-		            document.getElementById("url").value = "";
+		            document.getElementById("url").value = "";		//领取完后自动清空URL中的内容，防止误触
 				}
 		    }
 			
