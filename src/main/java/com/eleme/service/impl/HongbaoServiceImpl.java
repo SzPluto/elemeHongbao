@@ -216,7 +216,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	}
 	
 	
-	//识别本次领取红包金额，如果不是大红包，返回"不是大红包"。如果是大红包，返回大红包金额
+	//识别本次领取红包金额，如果不是大红包，返回0。如果是大红包，返回大红包金额
 	public String getHongbaoSum(String responseBody){
 		String hongbaoSum1 = responseBody;		//正则第一部分
         String regHongbaoSum1 = "\"amount\":[0-9,.]+,\"expire_date\"";
@@ -225,7 +225,7 @@ public class HongbaoServiceImpl implements HongbaoService {
         if(mHongbaoSum1.find()){
         	hongbaoSum1 = (mHongbaoSum1.group());
         }else{
-        	return "no bigHongbao";
+        	return "0";
         }
         
         String hongbaoSum2 = hongbaoSum1;		//正则第二部分
