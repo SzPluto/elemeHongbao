@@ -1,6 +1,7 @@
 package com.eleme.service.impl;
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -9,6 +10,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import com.eleme.dao.AltDao;
 import com.eleme.entity.Alt;
@@ -58,7 +68,7 @@ public class AltServiceImpl implements AltService{
 	
 	//将URL格式的Cookie转换为Avatar和ElemeKey
 	@Override
-	public List<String> formatConversion(String urlCookie) throws UnsupportedEncodingException {
+	public List<String> formatConversion(String urlCookie) throws IOException {
 		System.out.println(urlCookie);
 		if(urlCookie == null){
 			return null;
@@ -88,22 +98,51 @@ public class AltServiceImpl implements AltService{
         elemeKey = elemeKey.substring(13, elemeKey.length());
         list.add(avatar);
         list.add(elemeKey);
-		System.out.println(avatar);
-		System.out.println(elemeKey);
 		return list;
 	}
 
 	//向数据库提交Cookie
 	@Override
-	public String insertCookie(List<String> cookie) {
-		if(cookie == null){
-			return "失败";
+	public String insertCookie(List<String> cookie) throws IOException {
+		if(cookie == null){		//如果Cookie为空，返回失败信息
+			return "错误";
 		}
-		if(cookie.get(0)==null || cookie.get(1)==null){
-			return "失败";
+		if(cookie.get(0)==null || cookie.get(1)==null){		//如果Cookie中有任意一个为空，则返回失败信息
+			return "错误";
 		}
-		altDao.insertCookie(cookie.get(0),cookie.get(1),"133"+(int)((Math.random()*90000000+9999999)));
-		return "成功";
+		if(!"200".equals(checkCookie(cookie))){		//如果不是正确的Cookie，则返回非法的Cookie信息
+			return "非法的Cookie";
+		}
+		if(altDao.checkCookieRepeat(cookie.get(1))<1){		//判断数据库中是否有重复Cookie，如果有则返回此Cookie已存在信息，否则则为成功
+			altDao.insertCookie(cookie.get(0),cookie.get(1),"133"+(int)((Math.random()*90000000+9999999)));
+			return "成功";
+		}else{
+			return "此Cookie已存在";
+		}
 	}
-	
+
+	/*
+	 * 检测Cookie是否合法
+	 * 如果合法返回"200",其他为非法
+	 */
+	@Override
+	public String checkCookie(List<String> cookie) throws IOException {
+		String avatar = cookie.get(0);
+		String elemeKey = cookie.get(1);
+		
+		try (CloseableHttpClient httpClient = HttpClients.createDefault()){
+			HttpPost httpPost = new HttpPost("https://h5.ele.me/restapi/marketing/promotion/weixin/"+avatar);		//提交请求
+			httpPost.setEntity(new StringEntity("{\"group_sn\":\"10e761aecb85c818\",\"sign\":\""+elemeKey+"\","+
+					"\"phone\":\""+"133"+(int)((Math.random()*90000000+9999999))+"\","+
+					"\"weixin_avatar\":\"\","+
+					"\"weixin_username\":\"ε　　\"}"));	        //设置提交信息
+	        //返回的信息responseHandler
+	        ResponseHandler<String> responseHandler = response -> {
+	            String status =  String.valueOf(response.getStatusLine().getStatusCode());
+	            return status;
+	        };
+	        String responseBody = httpClient.execute(httpPost,responseHandler); 
+	        return responseBody;
+		}
+	}
 }

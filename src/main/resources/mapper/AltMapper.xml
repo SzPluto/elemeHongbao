@@ -37,4 +37,7 @@
 		insert into hb_alt (avatar,elemeKey,phoneNum,useNum) values (#{avatar},#{elemeKey},#{phoneNum},0);
 	</insert>
 	
+	<select id="checkCookieRepeat" resultType="Integer">
+		select count(*) from hb_alt where elemeKey = #{elemeKey};
+	</select>
 </mapper>

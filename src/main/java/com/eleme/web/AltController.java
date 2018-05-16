@@ -26,6 +26,6 @@ public class AltController {
     public String submitCookie(@RequestParam (value="urlCookie", required = false) String urlCookie) throws IOException {
 		List<String> cookie = altService.formatConversion(urlCookie);
 		String message = altService.insertCookie(cookie);
-        return message;  
+		return message;  
     }
 }

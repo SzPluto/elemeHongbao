@@ -1,5 +1,7 @@
 package com.eleme.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.eleme.entity.Alt;
@@ -29,4 +31,12 @@ public interface AltDao {
 	 * 添加Cookie
 	 */
 	public void insertCookie(@Param("avatar") String avatar,@Param("elemeKey") String elemeKey,@Param("phoneNum") String phoneNum);
+	
+	/**
+	 * 检查Cookie是否重复
+	 * @param avatar
+	 * @return
+	 */
+	public Integer checkCookieRepeat(String elemeKey);
+
 }

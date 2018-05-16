@@ -1,5 +1,6 @@
 package com.eleme.service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public interface AltService {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
-	public List<String> formatConversion(String urlCookie) throws UnsupportedEncodingException;
+	public List<String> formatConversion(String urlCookie) throws IOException;
 	
 	/**
 	 * 向数据库提交Cookie
@@ -62,6 +63,11 @@ public interface AltService {
 	 * @param ElemeKey
 	 * @return
 	 */
-	public String insertCookie(List<String> cookie);
-	
+	public String insertCookie(List<String> cookie)throws IOException;
+
+	/**
+	 * 检测Cookie是否合法
+	 * @return
+	 */
+	public String checkCookie(List<String> cookie) throws IOException;
 }
