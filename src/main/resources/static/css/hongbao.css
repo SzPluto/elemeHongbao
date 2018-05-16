@@ -6,3 +6,8 @@
     border-radius:0.3em;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+.preloadedImages {
+       width: 0px;
+       height: 0px;
+       display: inline;
+}

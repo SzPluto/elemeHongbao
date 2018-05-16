@@ -21,6 +21,11 @@ public class AltController {
         return "alt";  
     } 
     
+    @RequestMapping(value = "/tutorial" )  
+    public String tutorial() throws IOException{  
+        return "tutorial";  
+    } 
+    
 	@RequestMapping(value = "/insertCookie", method = RequestMethod.POST)
 	@ResponseBody
     public String submitCookie(@RequestParam (value="urlCookie", required = false) String urlCookie) throws IOException {

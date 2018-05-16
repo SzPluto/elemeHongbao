@@ -10,11 +10,12 @@
 		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/hongbao.css">
 		<title>饿了么一键红包领取</title>
-		</head>
+	</head>
 	<!-- 背景图片 -->
 	<body style="background-image:url(images/background.jpg);">	
+		<div id="preloadedImages" style="background-image:url(images/daydayHongbao.jpg);"></div>  <!-- 预加载天天领红包图片 -->
 		<div class=".container-fluid" align="center">
-			<h1 style="margin-top:7%;color:#463f39;font-size:55px;font-family:Sans-serif" >饿了么一键红包</h1>
+			<h1 style="margin-top:7%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
 			<div class="highlight" style="max-width:600px;margin-top:3%">
 				<form  id="formHongbao">
 					<div class="input-group mb-3" >
@@ -30,21 +31,35 @@
 						<textarea oninput="checkForm()" class="form-control " placeholder="输入红包链接" name="url" id="url"></textarea>		
 					</div>
 					<div align="left">
-						<a tabindex="0" class="btn btn btn-danger " data-placement="left" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="请注意" 
-						data-content="1.请不要用要领取的手机号打开红包。
-						<br><br>2.饿了么红包链接开头为：https://h5.ele.me/hongbao/ 
-						<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
-						<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">注意事项
-						</a>
-						<input type="button"  class="btn btn-dark float-right" value="领取红包" onclick="getHongbao()" id="get"/>
+							<a tabindex="0" class="btn btn btn-danger " data-placement="right" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="请注意" 
+							data-content="1.请不要用要领取的手机号打开红包。
+							<br><br>2.饿了么红包链接开头为：https://h5.ele.me/hongbao/ 
+							<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
+							<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">&nbsp;&nbsp;注意事项&nbsp;
+							</a>
+						<input type="button"  class="btn btn-secondary float-right" value="领取红包" onclick="getHongbao()" id="get"/>
+					</div>
+					<br>
+					<div align="left">
+						<div  class="btn-group " role="group" aria-label="Basic example" >
+							<a tabindex="0" class="btn btn btn-danger" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
+							data-content='<img src="images/daydayHongbao.jpg" >'>天天领红包
+							</a>
+							<a tabindex="0" class="btn btn btn-secondary" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
+							data-content="(´-｀ )">谢谢你用我的网站
+							</a>
+						</div>
+						<button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>
 					</div>
 				</form>	
 			</div>
 		</div>
 		<div align="center">
-			<h4 style="color:#dd3444">请务必按需领取<br>浪费后台次数者将被限制领取<br>喜欢就会放纵<br>但爱，就是克制</h4>
+			<br><br>
+			<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
 			<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
-			<h6 style="color:#463f39">由于饿了么红包可能出现的BUG，本站不保证100%领取大红包</h6>
+			<br><br>
+			<a href="https://github.com/SzPluto/donate">捐助</a>
 			<input hidden id="check" value="0"></input>
 		</div>
 		
@@ -67,7 +82,7 @@
 		            xmlHttp.open("post", "/getHongbao", false);
 		            xmlHttp.onreadystatechange=function(){
 						if(xmlHttp.readyState==4 && xmlHttp.status==200){
-			            	alert(xmlHttp.responseText);
+			            	alert(xmlHttp.responseText+"\n\n请务必按需领取\n浪费后台次数者将被限制领取\n喜欢就会放纵\n但爱，就是克制");
 			            }
 		            }
 		            xmlHttp.send(form);
@@ -75,6 +90,17 @@
 		            document.getElementById("url").value = "";		//领取完后自动清空URL中的内容，防止误触
 				}
 		    }
+			
+			function submitAlt(){
+				if(document.getElementById("phone").value != "" || document.getElementById("url").value != ""){
+					var r = confirm("是否回到主页\n请确保Cookie已提交或保存")
+					if(r==true){
+						window.location.href='/alt';
+					}
+				}else{
+					window.location.href='/alt';
+				}
+			}
 			
 			//判断手机号格式
 			function checkPhone(){

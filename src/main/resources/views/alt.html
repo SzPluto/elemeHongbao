@@ -9,27 +9,35 @@
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/hongbao.css">
-		<title>饿了么小号管理</title>
+		<title>饿了么Cookie贡献</title>
+		<script type="text/javascript">
+		</script>
 		</head>
 	<!-- 背景图片 -->
 	<body style="background-image:url(images/background.jpg);">	
 		<div class=".container-fluid" align="center">
-			<h1 style="margin-top:7%;color:#463f39;font-size:55px;font-family:Sans-serif" >饿了么小号管理</h1>
+			<h1 style="margin-top:7%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么Cookie贡献</h1>
 			<div class="highlight" style="max-width:600px;margin-top:3%">
 				<form  id="formCookie">
 					<div class="input-group mb-3" style="height:160px">
 						<div class="input-group-prepend">
-							<span class="input-group-text">&nbsp;&nbsp;URL&nbsp;&nbsp;</span>
+							<span class="input-group-text">&nbsp;&nbsp;Cookie&nbsp;</span>
 						</div>
 						<textarea class="form-control " placeholder="输入Cookie" name="urlCookie" id="urlCookie"></textarea>		
 					</div>
 					<div align="left">
-						<input type="button"  class="btn btn-dark" value="提交Cookie" onclick="submitCookie()" id="submit"/>
+						<div class="btn-group" role="group" aria-label="Basic example" >
+							<button type="button" class="btn btn-danger" onclick="backHome()">回到主页</button>
+							<button type="button" class="btn btn-secondary" onclick="getTutorial()">怎样获取Cookie？</button>
+						</div>
+						<input type="button"  class="btn btn-secondary float-right" value="提交Cookie" onclick="submitCookie()" id="submit"/>
 					</div>
 				</form>	
 			</div>
 		</div>
-		<input hidden id="check" value="0"></input>
+		<div>
+			<input hidden id="check" value="0"></input>
+		</div>
    		 <!-- jQuery,Popper JS,Bootstrap JS -->
 		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -39,6 +47,21 @@
 			$(function () { 
 				$("[data-toggle='popover']").popover();
 			});
+			
+			function backHome(){
+				if(document.getElementById("urlCookie").value != ""){
+					var r = confirm("是否回到主页\n请确保Cookie已提交或保存")
+					if(r==true){
+						window.location.href='..';
+					}
+				}else{
+					window.location.href='..';
+				}
+			}
+			
+			function getTutorial(){
+				window.open('/tutorial');
+			}
 			
 			//ajax提交表单
 			function submitCookie(){
@@ -54,7 +77,7 @@
 		            }
 		            xmlHttp.send(form);
 		            document.getElementById("check").value = "0";
-		            document.getElementById("cookie").value = "";		//领取完后自动清空URL中的内容，防止误触
+		            document.getElementById("urlCookie").value = "";		//领取完后自动清空URL中的内容，防止误触
 				}
 		    }
 		</script>

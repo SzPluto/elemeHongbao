@@ -85,6 +85,8 @@ public class AltServiceImpl implements AltService{
         Matcher mAvatar = pAvatar.matcher(avatar);
         if(mAvatar.find()){
         	avatar = (mAvatar.group());
+        }else{
+        	return null;
         }
         avatar = avatar.substring(50, avatar.length());
         
@@ -94,6 +96,8 @@ public class AltServiceImpl implements AltService{
         Matcher mElemeKey = pElemeKey.matcher(elemeKey);
         if(mElemeKey.find()){
         	elemeKey = (mElemeKey.group());
+        }else{
+        	return null;
         }
         elemeKey = elemeKey.substring(13, elemeKey.length());
         list.add(avatar);
@@ -115,7 +119,7 @@ public class AltServiceImpl implements AltService{
 		}
 		if(altDao.checkCookieRepeat(cookie.get(1))<1){		//判断数据库中是否有重复Cookie，如果有则返回此Cookie已存在信息，否则则为成功
 			altDao.insertCookie(cookie.get(0),cookie.get(1),"133"+(int)((Math.random()*90000000+9999999)));
-			return "成功";
+			return "成功啦！\n谢谢你(´-｀ )";
 		}else{
 			return "此Cookie已存在";
 		}
