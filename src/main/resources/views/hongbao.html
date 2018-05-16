@@ -58,11 +58,7 @@
 				$("[data-toggle='popover']").popover();
 			});
 			
-			//ajax提交表单
-			function getHongbao2(){
-				$('#get').attr("disabled",true);  
-			}
-			
+			//ajax提交表单		
 			function getHongbao(){
 				if(checkForm() && document.getElementById("check").value == "0"){		//通过检测value的办法防止重复点击
 					document.getElementById("check").value = "1";		//value

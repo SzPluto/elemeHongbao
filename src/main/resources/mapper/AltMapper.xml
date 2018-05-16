@@ -32,4 +32,9 @@
 	<select id="findMaxId" resultType="Integer">
 		select max(id) from hb_alt
 	</select>
+	
+	<insert id="insertCookie" >
+		insert into hb_alt (avatar,elemeKey,phoneNum,useNum) values (#{avatar},#{elemeKey},#{phoneNum},0);
+	</insert>
+	
 </mapper>

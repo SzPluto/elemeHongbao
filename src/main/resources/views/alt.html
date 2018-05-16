@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 响应式 meta标签 -->
+   		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/hongbao.css">
+		<title>饿了么小号管理</title>
+		</head>
+	<!-- 背景图片 -->
+	<body style="background-image:url(images/background.jpg);">	
+		<div class=".container-fluid" align="center">
+			<h1 style="margin-top:7%;color:#463f39;font-size:55px;font-family:Sans-serif" >饿了么小号管理</h1>
+			<div class="highlight" style="max-width:600px;margin-top:3%">
+				<form  id="formCookie">
+					<div class="input-group mb-3" style="height:160px">
+						<div class="input-group-prepend">
+							<span class="input-group-text">&nbsp;&nbsp;URL&nbsp;&nbsp;</span>
+						</div>
+						<textarea class="form-control " placeholder="输入Cookie" name="urlCookie" id="urlCookie"></textarea>		
+					</div>
+					<div align="left">
+						<input type="button"  class="btn btn-dark" value="提交Cookie" onclick="submitCookie()" id="submit"/>
+					</div>
+				</form>	
+			</div>
+		</div>
+		<input hidden id="check" value="0"></input>
+   		 <!-- jQuery,Popper JS,Bootstrap JS -->
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			//Popover插件加载
+			$(function () { 
+				$("[data-toggle='popover']").popover();
+			});
+			
+			//ajax提交表单
+			function submitCookie(){
+				if(document.getElementById("urlCookie").value != "" && document.getElementById("check").value == "0"){		//通过检测value的办法防止重复点击
+					document.getElementById("check").value = "1";		//value
+					var form = new FormData(document.getElementById("formCookie"));
+		            var xmlHttp = new XMLHttpRequest();
+		            xmlHttp.open("post", "/insertCookie", false);
+		            xmlHttp.onreadystatechange=function(){
+						if(xmlHttp.readyState==4 && xmlHttp.status==200){
+			            	alert(xmlHttp.responseText);
+			            }
+		            }
+		            xmlHttp.send(form);
+		            document.getElementById("check").value = "0";
+		            document.getElementById("cookie").value = "";		//领取完后自动清空URL中的内容，防止误触
+				}
+		    }
+		</script>
+	</body>
+</html>

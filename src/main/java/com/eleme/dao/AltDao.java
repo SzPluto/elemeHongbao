@@ -24,4 +24,9 @@ public interface AltDao {
 	 * 查找最大id
 	 */
 	public Integer findMaxId();
+	
+	/**
+	 * 添加Cookie
+	 */
+	public void insertCookie(@Param("avatar") String avatar,@Param("elemeKey") String elemeKey,@Param("phoneNum") String phoneNum);
 }

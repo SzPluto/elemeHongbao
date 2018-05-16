@@ -1,5 +1,8 @@
 package com.eleme.service;
 
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
 import com.eleme.entity.Alt;
 
 public interface AltService {
@@ -44,4 +47,21 @@ public interface AltService {
 	 * @return
 	 */
 	public Integer getUseNum(Integer id);
+	
+	/**
+	 * 将URL格式的Cookie转换为Avatar和ElemeKey
+	 * @param cookie
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	public List<String> formatConversion(String urlCookie) throws UnsupportedEncodingException;
+	
+	/**
+	 * 向数据库提交Cookie
+	 * @param Avatar
+	 * @param ElemeKey
+	 * @return
+	 */
+	public String insertCookie(List<String> cookie);
+	
 }
