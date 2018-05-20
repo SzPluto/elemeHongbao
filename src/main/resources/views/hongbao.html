@@ -16,7 +16,12 @@
 		<div id="preloadedImages" style="background-image:url(images/daydayHongbao.jpg);"></div>  <!-- 预加载天天领红包图片 -->
 		<div class=".container-fluid" align="center">
 			<h1 style="margin-top:7%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
-			<div class="highlight" style="max-width:600px;margin-top:3%">
+			<div class="highlight border border-secondary" style="margin-top:3%;">
+				<div align="left" style="margin:0px 0px 0px 10px;">
+					<a>恭喜RNG！！！</a>
+				</div>
+			</div>
+			<div class="highlight border border-secondary" style="padding:1rem;">
 				<form  id="formHongbao">
 					<div class="input-group mb-3" >
 		 				<div class="input-group-prepend" >
@@ -30,38 +35,40 @@
 						</div>
 						<textarea oninput="checkForm()" class="form-control " placeholder="输入红包链接" name="url" id="url"></textarea>		
 					</div>
-					<div align="left">
+					<div align="left" >
+						<div class="btn-group " role="group" aria-label="Basic example">
 							<a tabindex="0" class="btn btn btn-danger " data-placement="right" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="请注意" 
 							data-content="1.请不要用要领取的手机号打开红包。
 							<br><br>2.饿了么红包链接开头为：https://h5.ele.me/hongbao/ 
 							<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
-							<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">&nbsp;&nbsp;注意事项&nbsp;
+							<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">&nbsp;&nbsp;注意事项&nbsp;&nbsp;
 							</a>
+							<button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>
+						</div>	
 						<input type="button"  class="btn btn-secondary float-right" value="领取红包" onclick="getHongbao()" id="get"/>
-					</div>
-					<br>
-					<div align="left">
+					</div>	
+				</form>	
+			</div>
+			<div class="highlight border border-secondary" style="padding:1rem;">
+				<div align="left">
 						<div  class="btn-group " role="group" aria-label="Basic example" >
 							<a tabindex="0" class="btn btn btn-danger" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
 							data-content='<img src="images/daydayHongbao.jpg" >'>天天领红包
 							</a>
 							<a tabindex="0" class="btn btn btn-secondary" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
-							data-content="(´-｀ )">谢谢你用我的网站
+							data-content="(´-｀ )">←求你了每天扫扫吧
 							</a>
 						</div>
-						<button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>
 					</div>
-				</form>	
 			</div>
+				<div align="center">
+					<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
+					<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
+					<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate">捐助快要饿死的站长</a>
+				</div>
 		</div>
-		<div align="center">
-			<br><br>
-			<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
-			<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
-			<br><br>
-			<a href="https://github.com/SzPluto/donate">捐助</a>
-			<input hidden id="check" value="0"></input>
-		</div>
+		
+		
 		
    		 <!-- jQuery,Popper JS,Bootstrap JS -->
 		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
