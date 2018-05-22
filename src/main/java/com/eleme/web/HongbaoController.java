@@ -2,19 +2,12 @@ package com.eleme.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.eleme.service.AltService;
 import com.eleme.service.HongbaoService;
-
 import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller  
 public class HongbaoController {  
@@ -35,9 +28,15 @@ public class HongbaoController {
         return message;  
     }
 
-    @RequestMapping(value = "/returnPhone" )  
+    @RequestMapping(value = "/returnPhone" )
     public String returnPhone() throws IOException{  
     	hongbaoService.retrunPhone(32);
         return "hongbao";  
+    } 
+    
+    @RequestMapping(value = "/getAdvertising" )
+    @ResponseBody
+    public String getAdvertising() throws IOException{  
+        return hongbaoService.getAdvertising();
     } 
 }

@@ -2,12 +2,9 @@ package com.eleme.service.impl;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -18,16 +15,20 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.eleme.dao.AdvertisingDao;
 import com.eleme.dao.AltDao;
 import com.eleme.dao.RecordDao;
 import com.eleme.service.AltService;
 import com.eleme.service.HongbaoService;
 
+@Component
 @Service("hongbaoService")
+@Lazy(value=false)
 public class HongbaoServiceImpl implements HongbaoService {
 
 	
@@ -37,6 +38,8 @@ public class HongbaoServiceImpl implements HongbaoService {
 	private AltDao altDao;
 	@Resource
 	private RecordDao recordDao;
+	@Resource
+	private AdvertisingDao advertisingDao;
 	
 	int id = 1;
 	
@@ -84,7 +87,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        }
 	    }
 		if((int) residueNumAndMoney[0] == -400){
-			insertRecord("0", phoneNum, 0,"恶意的链接");
+			insertRecord("0", phoneNum, 0,"错误的链接");
         	System.out.println("malicious url!");
 			return "请勿提交恶意链接:)";
 		}
@@ -243,5 +246,10 @@ public class HongbaoServiceImpl implements HongbaoService {
 		Date time= new java.sql.Timestamp(new java.util.Date().getTime());
 		recordDao.insertRecord(money,phoneNum,succeed,time,remakes);
 	}
-	
+
+	//获取广告数据
+	@Override
+	public String getAdvertising() {
+		return advertisingDao.getAdvertising();
+	}
 }

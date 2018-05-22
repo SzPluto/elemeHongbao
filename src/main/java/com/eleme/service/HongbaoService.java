@@ -1,11 +1,6 @@
 package com.eleme.service;
 
 import java.io.IOException;
-import java.util.Date;
-
-import javax.annotation.Resource;
-
-import com.eleme.dao.AltDao;
 
 public interface HongbaoService {
 	
@@ -51,4 +46,9 @@ public interface HongbaoService {
 	 */
 	public void insertRecord(String money, String string, int succee,String remakes);
 	
+	/**
+	 * 获取广告数据
+	 * @return
+	 */
+	public String getAdvertising();
 }

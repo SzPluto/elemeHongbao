@@ -2,23 +2,17 @@ package com.eleme.service.impl;
 
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.annotation.Resource;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import com.eleme.dao.AltDao;
 import com.eleme.entity.Alt;
@@ -102,6 +96,8 @@ public class AltServiceImpl implements AltService{
         elemeKey = elemeKey.substring(13, elemeKey.length());
         list.add(avatar);
         list.add(elemeKey);
+        System.out.println(avatar);
+        System.out.println(elemeKey);
 		return list;
 	}
 

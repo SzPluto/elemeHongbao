@@ -12,13 +12,13 @@
 		<title>饿了么一键红包领取</title>
 	</head>
 	<!-- 背景图片 -->
-	<body style="background-image:url(images/background.jpg);">	
+	<body style="background-image:url(images/background.jpg);" onload="getAdvertising()">	
 		<div id="preloadedImages" style="background-image:url(images/daydayHongbao.jpg);"></div>  <!-- 预加载天天领红包图片 -->
 		<div class=".container-fluid" align="center">
 			<h1 style="margin-top:7%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
 			<div class="highlight border border-secondary" style="margin-top:3%;">
 				<div align="left" style="margin:0px 0px 0px 10px;">
-					<a>恭喜RNG！！！</a>
+					<a id="advertising"></a>
 				</div>
 			</div>
 			<div class="highlight border border-secondary" style="padding:1rem;">
@@ -37,7 +37,7 @@
 					</div>
 					<div align="left" >
 						<div class="btn-group " role="group" aria-label="Basic example">
-							<a tabindex="0" class="btn btn btn-danger " data-placement="right" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="请注意" 
+							<a tabindex="0" class="btn btn btn-danger " data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="请注意" 
 							data-content="1.请不要用要领取的手机号打开红包。
 							<br><br>2.饿了么红包链接开头为：https://h5.ele.me/hongbao/ 
 							<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
@@ -51,22 +51,22 @@
 			</div>
 			<div class="highlight border border-secondary" style="padding:1rem;">
 				<div align="left">
-						<div  class="btn-group " role="group" aria-label="Basic example" >
-							<a tabindex="0" class="btn btn btn-danger" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
-							data-content='<img src="images/daydayHongbao.jpg" >'>天天领红包
-							</a>
-							<a tabindex="0" class="btn btn btn-secondary" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
-							data-content="(´-｀ )">←求你了每天扫扫吧
-							</a>
-						</div>
+					<div  class="btn-group " role="group" aria-label="Basic example" >
+						<a tabindex="0" class="btn btn btn-danger" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
+						data-content='<img src="images/daydayHongbao.jpg" >'>天天领红包
+						</a>
+						<a tabindex="0" class="btn btn btn-secondary" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
+						data-content="(´-｀ )">←求你了每天扫扫吧
+						</a>
 					</div>
-			</div>
-				<div align="center">
-					<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
-					<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
-					<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate">捐助快要饿死的站长</a>
-					<input hidden id="check" value="0"></input>
 				</div>
+			</div>
+			<div align="center">
+				<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
+				<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
+				<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate">捐助快要饿死的站长</a>
+				<input hidden id="check" value="0"></input>
+			</div>
 		</div>
 		
 		
@@ -99,6 +99,24 @@
 				}
 		    }
 			
+			//ajax获取广告
+			function getAdvertising(){
+				var form = new FormData();
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.open("Get", "/getAdvertising", false);
+				xmlHttp.onreadystatechange=function(){
+					if(xmlHttp.readyState==4 && xmlHttp.status==200){
+						if(xmlHttp.responseText == ""){
+							document.getElementById("advertising").innerHTML = "前排广告位出租~~饿了么大红包交流群：599753879";	
+						}else{
+							document.getElementById("advertising").innerHTML = xmlHttp.responseText;
+						}
+		            }
+				}
+				xmlHttp.send(form);
+			}
+			
+			//跳转贡献小号页面
 			function submitAlt(){
 				if(document.getElementById("phone").value != "" || document.getElementById("url").value != ""){
 					var r = confirm("是否回到主页\n请确保Cookie已提交或保存")
