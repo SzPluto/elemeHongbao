@@ -58,11 +58,11 @@ public class HongbaoServiceImpl implements HongbaoService {
 			}
 			residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());     //调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
 	        id++;		//每次领取后id+1	
-	        while((int) residueNumAndMoney[0] == 1){		//如果剩余次数等于一，此时需要将小号的PhoneNum修改为目标手机号再领取
+	        if((int) residueNumAndMoney[0] == 1){		//如果剩余次数等于一，此时需要将小号的PhoneNum修改为目标手机号再领取
 				if(id > altService.findMaxId()){		//老样子检测一遍id是否合法
 					if(altService.getUseNum(altService.findMaxId()) >= 5){
-						insertRecord("0", phoneNum, 0,"后台次数耗尽");
-						return "后台次数已被耗尽，明天再来吧";
+						insertRecord("0", phoneNum, 0,"后台次数耗尽，下一个是大红包");
+						return "后台次数已被耗尽，但你运气还蛮好的诶，下一个就是大红包，可以尝试手动领取或发给朋友领取哦~";
 					}
 					id = 1;
 				}
@@ -70,10 +70,28 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
 				changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号
 		        id++;	//每次领取后id+1
-		        if((int) residueNumAndMoney[0] >= 1){		//手机已经领取过此红包 或 你的手机号今日领取次数已达上限
-		        	insertRecord((String)residueNumAndMoney[1],phoneNum,0,"手机已领取过或手机上限");
-		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，本红包下一个为大红包，可以发给你的朋友领");
+		        if((int) residueNumAndMoney[0] >= 1){		//手机已经领取过此红包 或 你的手机号今日领取次数已达上限或小号领取次数耗尽，下面进行第二次尝试。
+		        	if(id > altService.findMaxId()){	//如果当前ID已经到达最后一个
+						if(altService.getUseNum(altService.findMaxId()) >= 5){   //如果最后一个小号useNum>=5,表示所有小号已经耗尽
+							insertRecord("0", phoneNum, 0,"后台次数耗尽，下一个是大红包");			//向数据库提交领取信息
+							return "后台次数已被耗尽，但你运气还蛮好的诶，下一个就是大红包，可以尝试手动领取或发给朋友领取哦~";	
+						}
+						id = 1;
+					}
+		        	try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+		        	changePhoneNum(id,phoneNum);	//修改为目标手机号
+		        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
+					changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号		        	
+					id++;  	
 		        }
+		        if((int) residueNumAndMoney[0] >= 1){	//第二次如果仍然领取失败
+	        		insertRecord((String)residueNumAndMoney[1],phoneNum,0,"手机已领取过或手机上限");
+		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，亦或是系统错误，本红包下一个为大红包，可以发给你的朋友领");
+	        	}  	
 		        if((int) residueNumAndMoney[0] == 0){		//至此，红包领取成功，返回成功信息
 		        	insertRecord((String)residueNumAndMoney[1],phoneNum,1,"领取成功");
 		        	System.out.println("get bigHongbao succeed!");
