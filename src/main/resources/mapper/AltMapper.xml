@@ -34,7 +34,7 @@
 	</select>
 	
 	<insert id="insertCookie" >
-		insert into hb_alt_cache (avatar,elemeKey,phoneNum) values (#{avatar},#{elemeKey},#{phoneNum});
+		insert into hb_alt_cache (avatar,elemeKey,phoneNum,useNum,errorNum) values (#{avatar},#{elemeKey},#{phoneNum},0,0);
 	</insert>
 	
 	<select id="checkCookieRepeat" resultType="Integer">
