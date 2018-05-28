@@ -12,7 +12,12 @@ public interface AltDao {
 	/*
 	 * 使用次数+1
 	 */
-	public void addUseNum(Integer id);
+	public void addUseNum(@Param("id") Integer id);
+	
+	/*
+	 * 领取错误次数+1
+	 */
+	public void addErrorNum(@Param("id") Integer id);
 	
 	/*
 	 * 修改手机号
@@ -35,5 +40,19 @@ public interface AltDao {
 	 * @return
 	 */
 	public Integer checkCookieRepeat(String elemeKey);
-
+	
+	
+	/**
+	 * 查找下一个小号的id
+	 * @param id
+	 * @return
+	 */
+	public Integer getNextId(@Param("id")Integer id);
+	
+	/**
+	 * 查找下一个id，不论是否可以领取(遍历id)
+	 * @param id
+	 * @return
+	 */
+	public Integer traversalId(@Param("id")Integer id);
 }

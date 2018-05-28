@@ -30,7 +30,7 @@ public class HongbaoController {
 
     @RequestMapping(value = "/returnPhone" )
     public String returnPhone() throws IOException{  
-    	hongbaoService.retrunPhone(32);
+    	hongbaoService.retrunPhone();
         return "hongbao";  
     } 
     
@@ -39,4 +39,5 @@ public class HongbaoController {
     public String getAdvertising() throws IOException{  
         return hongbaoService.getAdvertising();
     } 
+   
 }

@@ -23,6 +23,13 @@ public interface AltService {
 	public void addUseNumber(Integer id);
 	
 	/**
+	 * 领取错误次数+1
+	 * 
+	 * @return
+	 */
+	public void addErrorNumber(Integer id);
+	
+	/**
 	 * 查找最大id
 	 * @return
 	 */
@@ -70,4 +77,12 @@ public interface AltService {
 	 * @return
 	 */
 	public String checkCookie(List<String> cookie) throws IOException;
+	
+	/**
+	 * 寻找下一个小号的Id
+	 * @param id
+	 * @return
+	 */
+	public Integer getNextId(Integer id);
+
 }

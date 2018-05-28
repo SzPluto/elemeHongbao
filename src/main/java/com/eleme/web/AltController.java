@@ -33,4 +33,9 @@ public class AltController {
 		String message = altService.insertCookie(cookie);
 		return message;  
     }
+	
+    @RequestMapping(value = "/test" )
+    public String test() throws IOException{  
+    	return "alt";
+    } 
 }

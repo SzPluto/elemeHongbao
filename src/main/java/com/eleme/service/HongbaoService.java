@@ -23,7 +23,7 @@ public interface HongbaoService {
 	 * @param i
 	 * @throws IOException
 	 */
-	public void retrunPhone(int maxId) throws IOException;
+	public void retrunPhone() throws IOException;
 	
 	/**
 	 * 修改手机号

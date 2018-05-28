@@ -26,13 +26,11 @@ import com.eleme.dao.RecordDao;
 import com.eleme.service.AltService;
 import com.eleme.service.HongbaoService;
 
-@Component
 @Service("hongbaoService")
-@Lazy(value=false)
 public class HongbaoServiceImpl implements HongbaoService {
 
 	
-	@Autowired
+	@Resource
     private AltService altService;
 	@Resource
 	private AltDao altDao;
@@ -41,58 +39,64 @@ public class HongbaoServiceImpl implements HongbaoService {
 	@Resource
 	private AdvertisingDao advertisingDao;
 	
-	int id = 1;
-	
+	int id;
+
 	//领大红包方法
 	@Override
 	public  String getHongbao(String phoneNum,String url) throws IOException{
+		int suspectedErrorId = 0;	//疑似错误Id
+		int lastResidueNum = 16;	//上一次领取时的剩余次数,默认为16,因为红包最大个数为15
 		Object[] residueNumAndMoney ={3,0};  //rt[0]为还需要领取的次数                  rt[1]为领取到的红包金额
 		while((int) residueNumAndMoney[0]>0){		//进行第一次判断，如果剩余需要领取次数小于等于0则表示红包已被领取，返回失败提示，否则只要剩余需要领取次数大于0则一直运行，
-			//首先判断id是否合法
-			if(id > altService.findMaxId()){	//如果当前ID已经到达最后一个
-				if(altService.getUseNum(altService.findMaxId()) >= 5){   //如果最后一个小号useNum>=5,表示所有小号已经耗尽
+			synchronized(this){id=altService.getNextId(id);		//领取前先id+1
+				altService.addUseNumber(id);
+				if(altService.getUseNum(id) >= 6){   //首先判断id是否合法，如果当前小号useNum>=5,表示所有小号已经耗尽
 					insertRecord("0", phoneNum, 0,"后台次数耗尽");			//向数据库提交领取信息
 					return "后台次数已被耗尽，明天再来吧";	
 				}
-				id = 1;
-			}
-			residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());     //调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
-	        id++;		//每次领取后id+1	
-	        if((int) residueNumAndMoney[0] == 1){		//如果剩余次数等于一，此时需要将小号的PhoneNum修改为目标手机号再领取
-				if(id > altService.findMaxId()){		//老样子检测一遍id是否合法
-					if(altService.getUseNum(altService.findMaxId()) >= 5){
+				residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());     //调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
+				if((int)residueNumAndMoney[0] == lastResidueNum){		//判断剩余领取次数是否与上次相同，如果相同则领取错误次数+1
+					altService.addErrorNumber(id);
+				}
+				lastResidueNum = (int)residueNumAndMoney[0];
+			}	
+	        if((int) residueNumAndMoney[0] == 1){		//如果剩余次数等于一，此时需要将小号的PhoneNum修改为目标手机号再领取		
+	        	synchronized(this){ id=altService.getNextId(id);
+					altService.addUseNumber(id);
+		        	if(altService.getUseNum(id) >= 6){
 						insertRecord("0", phoneNum, 0,"后台次数耗尽，下一个是大红包");
 						return "后台次数已被耗尽，但你运气还蛮好的诶，下一个就是大红包，可以尝试手动领取或发给朋友领取哦~";
 					}
-					id = 1;
-				}
-	        	changePhoneNum(id,phoneNum);	//修改为目标手机号
-	        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
-				changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号
-		        id++;	//每次领取后id+1
+		        	changePhoneNum(id,phoneNum);	//修改为目标手机号
+		        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
+					changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号
+	        	}
 		        if((int) residueNumAndMoney[0] >= 1){		//手机已经领取过此红包 或 你的手机号今日领取次数已达上限或小号领取次数耗尽，下面进行第二次尝试。
-		        	if(id > altService.findMaxId()){	//如果当前ID已经到达最后一个
-						if(altService.getUseNum(altService.findMaxId()) >= 5){   //如果最后一个小号useNum>=5,表示所有小号已经耗尽
-							insertRecord("0", phoneNum, 0,"后台次数耗尽，下一个是大红包");			//向数据库提交领取信息
-							return "后台次数已被耗尽，但你运气还蛮好的诶，下一个就是大红包，可以尝试手动领取或发给朋友领取哦~";	
-						}
-						id = 1;
-					}
 		        	try {
 						Thread.sleep(5000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-		        	changePhoneNum(id,phoneNum);	//修改为目标手机号
-		        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
-					changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号		        	
-					id++;  	
+		        	synchronized(this){suspectedErrorId = id;
+			        id=altService.getNextId(id);
+						altService.addUseNumber(id);
+						if(altService.getUseNum(id) >= 6){   //如果当前小号使用次数大于5,表示所有小号已经耗尽
+							insertRecord("0", phoneNum, 0,"后台次数耗尽，下一个是大红包");			//向数据库提交领取信息
+							return "后台次数已被耗尽，但你运气还蛮好的诶，下一个就是大红包，可以尝试手动领取或发给朋友领取哦~";	
+						}
+			        	changePhoneNum(id,phoneNum);	//修改为目标手机号
+			        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
+						changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号		
+		        	}
 		        }
 		        if((int) residueNumAndMoney[0] >= 1){	//第二次如果仍然领取失败
 	        		insertRecord((String)residueNumAndMoney[1],phoneNum,0,"手机已领取过或手机上限");
-		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，亦或是系统错误，本红包下一个为大红包，可以发给你的朋友领");
+		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，亦或是系统错误，本红包下一个为大红包，可以发给你的朋友领哦~");
 	        	}  	
 		        if((int) residueNumAndMoney[0] == 0){		//至此，红包领取成功，返回成功信息
+		        	if(suspectedErrorId != 0 ){		//如果疑似错误id不等于0说明上一次领取错误，将疑似错误Id的领取次数+1
+		        		altService.addErrorNumber(suspectedErrorId);
+		        	}
 		        	insertRecord((String)residueNumAndMoney[1],phoneNum,1,"领取成功");
 		        	System.out.println("get bigHongbao succeed!");
 					return ("红包领取成功,红包金额为："+(String)residueNumAndMoney[1]+"元");
@@ -135,8 +139,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 			httpPost.setEntity(new StringEntity("{\"group_sn\":\""+sn+"\",\"sign\":\""+elemeKey+"\","+
 					"\"phone\":\""+phoneNum+"\","+
 					"\"weixin_avatar\":\"\","+
-					"\"weixin_username\":\"ε　　\"}"));	        //设置提交信息
-			altService.addUseNumber(id);
+					"\"weixin_username\":\"ꡀ\"}"));	        //设置提交信息
 	        //返回的信息responseHandler
 	        ResponseHandler<String> responseHandler = response -> {
 	            int status = response.getStatusLine().getStatusCode();
@@ -160,7 +163,6 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        System.out.println(responseBody);
 	        System.out.println(" targetNumber:"+Integer.parseInt(luckyNum));
 	        System.out.println("    getNumber:"+count);
-	        System.out.println("residueNumber:"+(Integer.parseInt(luckyNum) - count));
 	        System.out.println("id="+id);
 	        System.out.println("phoneNumber:"+phoneNum);
 	        System.out.println("money:"+hongbaoSum);
@@ -184,8 +186,6 @@ public class HongbaoServiceImpl implements HongbaoService {
             altDao.changePhoneNum(id, phoneNum);
 			System.out.println(phoneNum);
 			System.out.println("id="+id);
-			System.out.println(altService.getAvatar(id));
-			System.out.println(altService.getElemeKey(id));
 			// Create a custom response handler
             ResponseHandler<String> responseHandler = response -> {
                     HttpEntity entity = response.getEntity();
@@ -212,12 +212,16 @@ public class HongbaoServiceImpl implements HongbaoService {
 	
 	
 	//重置所有手机号
-	public void retrunPhone(int maxId) throws IOException{
-		while(true){
-			changePhoneNum(id,randomPhoneNum());
-			id++;
-			if(id == maxId){
-				return;
+	public void retrunPhone() throws IOException{
+		int traversalId = 0;
+		int maxId = altDao.findMaxId();
+		synchronized(this){
+			while(true){
+				traversalId = altDao.traversalId(traversalId);
+				changePhoneNum(traversalId,randomPhoneNum());
+				if(traversalId == maxId){
+					return;
+				}
 			}
 		}
 	}
@@ -240,7 +244,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	//识别本次领取红包金额，如果不是大红包，返回0。如果是大红包，返回大红包金额
 	public String getHongbaoSum(String responseBody){
 		String hongbaoSum1 = responseBody;		//正则第一部分
-        String regHongbaoSum1 = "\"amount\":[0-9,.]+,\"expire_date\"";
+        String regHongbaoSum1 = "\"amount\":[0-9,.]+,\"(expire_date|hongbao_variety\":\\[\"全品类\")";
         Pattern pHongbaoSum1 = Pattern.compile(regHongbaoSum1);
         Matcher mHongbaoSum1 = pHongbaoSum1.matcher(hongbaoSum1);
         if(mHongbaoSum1.find()){

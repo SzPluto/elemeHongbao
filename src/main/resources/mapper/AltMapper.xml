@@ -34,10 +34,23 @@
 	</select>
 	
 	<insert id="insertCookie" >
-		insert into hb_alt (avatar,elemeKey,phoneNum,useNum) values (#{avatar},#{elemeKey},#{phoneNum},0);
+		insert into hb_alt_cache (avatar,elemeKey,phoneNum) values (#{avatar},#{elemeKey},#{phoneNum});
 	</insert>
 	
 	<select id="checkCookieRepeat" resultType="Integer">
-		select count(*) from hb_alt where elemeKey = #{elemeKey};
+		select (select count(*) from hb_alt where elemeKey = #{elemeKey})+(select count(*) from hb_alt_cache where elemeKey = #{elemeKey}) as sum_count;
 	</select>
+	
+	<select id="getNextId" resultType="Integer">
+		select ifnull((select id from hb_alt where id != #{id} order by useNum,id asc limit 1),0)
+	</select>
+	
+	<update id="addErrorNum">
+		update hb_alt set errorNum = errorNum + 1 where id=#{id}
+	</update>
+	
+	<select id="traversalId" resultType="Integer">
+		select ifnull((select id from hb_alt where id > #{id} order by id asc limit 1),0)
+	</select>
+
 </mapper>

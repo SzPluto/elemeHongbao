@@ -145,4 +145,26 @@ public class AltServiceImpl implements AltService{
 	        return responseBody;
 		}
 	}
+
+	/**
+	 * 获取下一个id，如果为0，则返回1
+	 */
+	@Override
+	public Integer getNextId(Integer id) {
+		int nextId = altDao.getNextId(id);
+		if(nextId == 0){
+			return 1;
+		}else{
+			return nextId;
+		}
+	}
+	
+	/**
+	 * 领取错误次数+1
+	 */
+	@Override
+	public void addErrorNumber(Integer id) {
+		altDao.addErrorNum(id);
+	}
+	
 }
