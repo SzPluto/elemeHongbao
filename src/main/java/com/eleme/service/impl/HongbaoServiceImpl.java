@@ -69,7 +69,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 					}
 		        	changePhoneNum(id,phoneNum);	//修改为目标手机号
 		        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
-					changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号
+					changePhoneNum(id,randomPhoneNum());	//重要!将小号手机重新设置为随机手机号
 	        	}
 		        if((int) residueNumAndMoney[0] >= 1){		//手机已经领取过此红包 或 你的手机号今日领取次数已达上限或小号领取次数耗尽，下面进行第二次尝试。
 		        	try {
@@ -86,7 +86,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 						}
 			        	changePhoneNum(id,phoneNum);	//修改为目标手机号
 			        	residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,phoneNum);		//调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
-						changePhoneNum(id,randomPhoneNum());	//重要！将小号手机重新设置为随机手机号		
+						changePhoneNum(id,randomPhoneNum());	//重要!将小号手机重新设置为随机手机号		
 		        	}
 		        }
 		        if((int) residueNumAndMoney[0] >= 1){	//第二次如果仍然领取失败
@@ -193,10 +193,10 @@ public class HongbaoServiceImpl implements HongbaoService {
             };
             String responseBody = httpClient.execute(httpPut, responseHandler);
             if(responseBody==null){
-            	System.out.println("Change phonenumber success！");
+            	System.out.println("Change phonenumber success!");
             }else{
             	System.out.println(responseBody);
-            	System.out.println("Change phonenumbe failed！");
+            	System.out.println("Change phonenumbe failed!");
             }
             System.out.println("--------------------------------------------");
             return;

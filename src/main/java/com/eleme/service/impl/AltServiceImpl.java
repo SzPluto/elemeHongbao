@@ -63,7 +63,6 @@ public class AltServiceImpl implements AltService{
 	//将URL格式的Cookie转换为Avatar和ElemeKey
 	@Override
 	public List<String> formatConversion(String urlCookie) throws IOException {
-		System.out.println(urlCookie);
 		if(urlCookie == null){
 			return null;
 		}
@@ -96,8 +95,8 @@ public class AltServiceImpl implements AltService{
         elemeKey = elemeKey.substring(13, elemeKey.length());
         list.add(avatar);
         list.add(elemeKey);
-        System.out.println(avatar);
-        System.out.println(elemeKey);
+        System.out.println("avatar   = "+avatar);
+        System.out.println("elemeKey = "+elemeKey);
 		return list;
 	}
 
@@ -115,7 +114,7 @@ public class AltServiceImpl implements AltService{
 		}
 		if(altDao.checkCookieRepeat(cookie.get(1))<1){		//判断数据库中是否有重复Cookie，如果有则返回此Cookie已存在信息，否则则为成功
 			altDao.insertCookie(cookie.get(0),cookie.get(1),"133"+(int)((Math.random()*90000000+9999999)));
-			return "成功啦！\n谢谢你(´-｀ )";
+			return "成功啦!\n谢谢你(´-｀ )";
 		}else{
 			return "此Cookie已存在";
 		}
