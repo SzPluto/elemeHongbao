@@ -12,7 +12,7 @@
 		<title>饿了么一键红包领取</title>
 	</head>
 	<!-- 背景图片 -->
-	<body style="background-image:url(images/background.jpg);" onload="getAdvertising()">	
+	<body style="background-image:url(images/background.jpg);">	
 		<div id="preloadedImages" style="background-image:url(images/daydayHongbao.jpg);"></div>  <!-- 预加载天天领红包图片 -->
 		<div class=".container-fluid" align="center">
 			<h1 style="margin-top:7%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
@@ -33,7 +33,7 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text">&nbsp;&nbsp;URL&nbsp;&nbsp;</span>
 						</div>
-						<textarea oninput="checkForm()" class="form-control " placeholder="输入红包链接" name="url" id="url"></textarea>		
+						<textarea oninput="checkForm(),urlExpand()" class="form-control " placeholder="输入红包链接" name="url" id="url"></textarea>		
 					</div>
 					<div align="left" >
 						<div class="btn-group " role="group" aria-label="Basic example">
@@ -72,25 +72,40 @@
 		
 		
    		 <!-- jQuery,Popper JS,Bootstrap JS -->
-		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script type="text/javascript">
 			//Popover插件加载
 			$(function () { 
 				$("[data-toggle='popover']").popover();
+				
+				//加载广告
+				$.ajax({  
+		            url:"/getAdvertising",  
+		            type:"GET",  
+		            dataType:"json",  
+		            success:function(response){    	
+		            	$("#advertising").html(response);
+		            },  
+		            error:function() {  
+		            	$("#advertising").html("前排广告位出租~~饿了么大红包交流群：599753879");
+		            }  
+		        });
 			});
 			
-			//ajax提交表单		
+
+			
+			//ajax提交表单
 			function getHongbao(){
 				if(checkForm() && document.getElementById("check").value == "0"){		//通过检测value的办法防止重复点击
-					document.getElementById("check").value = "1";		//value
+					document.getElementById("check").value = "1";
 					var form = new FormData(document.getElementById("formHongbao"));
 		            var xmlHttp = new XMLHttpRequest();
-		            xmlHttp.open("post", "/getHongbao", false);
-		            xmlHttp.onreadystatechange=function(){
+		           xmlHttp.open("post", "/getHongbao", false);
+		           xmlHttp.onreadystatechange=function(){
 						if(xmlHttp.readyState==4 && xmlHttp.status==200){
-			            	alert(xmlHttp.responseText+"\n\n请务必按需领取\n浪费后台次数者将被限制领取\n喜欢就会放纵\n但爱，就是克制");
+			            	alert(xmlHttp.responseText+"\n\n具体金额请以实际到账金额为准");
 			            }
 		            }
 		            xmlHttp.send(form);
@@ -99,23 +114,32 @@
 				}
 		    }
 			
-			//ajax获取广告
-			function getAdvertising(){
-				var form = new FormData();
-				var xmlHttp = new XMLHttpRequest();
-				xmlHttp.open("Get", "/getAdvertising", false);
-				xmlHttp.onreadystatechange=function(){
-					if(xmlHttp.readyState==4 && xmlHttp.status==200){
-						if(xmlHttp.responseText == ""){
-							document.getElementById("advertising").innerHTML = "前排广告位出租~~饿了么大红包交流群：599753879";	
-						}else{
-							document.getElementById("advertising").innerHTML = xmlHttp.responseText;
-						}
-		            }
-				}
-				xmlHttp.send(form);
+			//将短链接转换为场链接
+			function getLongUrl(){
+				$(function () { 
+					var shortUrl = $("#url").val();
+					$.ajax({  
+			            url:"http://api.weibo.com/2/short_url/shorten.json?source=2849184197&url_long="+shortUrl,  
+			            type:"GET",  
+			            dataType: 'jsonp',
+			            cache:true,
+			            crossDomain: true,
+			            success:function(data){
+			            	if(data.data.urls[0].url_long == "https://url.cn/sorry"){
+			            		$("#url").val("");
+			            		alert("错误的短连接");
+			            	}
+			            	else{
+			            		$("#url").val(data.data.urls[0].url_long); //处理返回数据，显示到网页上 
+			            	}
+			            },
+			            error:function() {
+			            	alert("错误的短链接");
+			            }
+			        });
+				});
 			}
-			
+
 			//跳转贡献小号页面
 			function submitAlt(){
 				if(document.getElementById("phone").value != "" || document.getElementById("url").value != ""){
@@ -160,6 +184,15 @@
 				}
 			}
 			
+			//检测并转换短连接
+			function urlExpand(){
+				var url = document.getElementById("url").value;
+				var reg = /url.cn/;
+				if(reg.test(url)){
+					normalColor("url");
+					getLongUrl();
+				}
+			}
 			//格式错误显示颜色
 			function warningColor(id){
 				document.getElementById(id).style.backgroundColor = "#dd3444";
