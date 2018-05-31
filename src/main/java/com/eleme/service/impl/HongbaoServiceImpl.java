@@ -15,9 +15,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.eleme.dao.AdvertisingDao;
@@ -111,7 +108,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 		if((int) residueNumAndMoney[0] == -400){
 			insertRecord("0", phoneNum, 0,"错误的链接");
         	System.out.println("malicious url!");
-			return "请勿提交恶意链接:)";
+			return "错误的链接，请检查你的链接是否可用";
 		}
 		insertRecord("0", phoneNum, 0,"此红包大红包已被领取");
 		System.out.println("not have bigHongbao!");

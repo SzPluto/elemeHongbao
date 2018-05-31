@@ -65,6 +65,8 @@
 				<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
 				<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
 				<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate">捐助快要饿死的站长</a>
+				<br>
+				<script src="https://s13.cnzz.com/z_stat.php?id=1273833799&web_id=1273833799" language="JavaScript"></script>
 				<input hidden id="check" value="0"></input>
 			</div>
 		</div>
@@ -84,7 +86,7 @@
 				$.ajax({  
 		            url:"/getAdvertising",  
 		            type:"GET",  
-		            dataType:"json",  
+		            dataType:"text",  
 		            success:function(response){    	
 		            	$("#advertising").html(response);
 		            },  
@@ -114,7 +116,7 @@
 				}
 		    }
 			
-			//将短链接转换为场链接
+			//将短链接转换为长链接
 			function getLongUrl(){
 				$(function () { 
 					var shortUrl = $("#url").val();
@@ -131,6 +133,7 @@
 			            	}
 			            	else{
 			            		$("#url").val(data.data.urls[0].url_long); //处理返回数据，显示到网页上 
+			            		checkForm();
 			            	}
 			            },
 			            error:function() {
