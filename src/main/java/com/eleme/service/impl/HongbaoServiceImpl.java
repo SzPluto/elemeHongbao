@@ -41,6 +41,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	//领大红包方法
 	@Override
 	public  String getHongbao(String phoneNum,String url) throws IOException{
+		int errorUrlExponent = 0;	//错误链接指数，如果该指数等于三表明这是一个异常的链接
 		int suspectedErrorId = 0;	//疑似错误Id
 		int lastResidueNum = 16;	//上一次领取时的剩余次数,默认为16,因为红包最大个数为15
 		Object[] residueNumAndMoney ={3,0};  //rt[0]为还需要领取的次数                  rt[1]为领取到的红包金额
@@ -54,6 +55,13 @@ public class HongbaoServiceImpl implements HongbaoService {
 				residueNumAndMoney = hongbao(url,altService.getAvatar(id),altService.getElemeKey(id),id,randomPhoneNum());     //调用领红包方法兵获取领红包方法返回的剩余领取次数与金额
 				if((int)residueNumAndMoney[0] == lastResidueNum){		//判断剩余领取次数是否与上次相同，如果相同则领取错误次数+1
 					altService.addErrorNumber(id);
+					errorUrlExponent++;
+				}else{
+					errorUrlExponent = 0;
+				}
+				if(errorUrlExponent == 3){
+					insertRecord("0", phoneNum, 0,"异常链接");
+					return "异常链接，请再次尝试领取，如果第二次尝试仍然失败请不要再使用此链接";
 				}
 				lastResidueNum = (int)residueNumAndMoney[0];
 			}	

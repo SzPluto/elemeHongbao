@@ -4,4 +4,5 @@
 	<insert id="insertRecord" >
 		INSERT INTO hb_record (money,phone,succeed,time,remakes) VALUES (#{money},#{phone},#{succeed},#{time},#{remakes});
 	</insert>
+
 </mapper>
