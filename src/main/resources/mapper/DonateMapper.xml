@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eleme.dao.DonateDao">
+	<resultMap type="com.eleme.entity.Donate" id="DonateResult">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="money" column="money"/>
+		<result property="time" column="time"/>
+		<result property="source" column="source"/>
+	</resultMap>
+	<select id="getDonate"  resultMap="DonateResult">
+		select * from hb_donate order by id desc limit 5;
+	</select>
+	
+</mapper>
