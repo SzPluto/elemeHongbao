@@ -4,5 +4,25 @@
 	<insert id="insertRecord" >
 		INSERT INTO hb_record (money,phone,succeed,time,remakes) VALUES (#{money},#{phone},#{succeed},#{time},#{remakes});
 	</insert>
-
+	
+	<!-- 今日领取次数 -->
+	<select id="todayGetRecordNumber" resultType="String">
+		SELECT COUNT(*) FROM hb_record where to_days(time) = to_days(now()) and succeed = 1;
+	</select>
+	
+	<!-- 今日领取金额 -->
+	<select id="todayGetRecordMoney" resultType="String">
+		select round((select sum(money) from hb_record where to_days(time) = to_days(now()) and succeed = 1),1);	
+	</select>
+	
+	<!-- 总领取次数 -->
+	<select id="allGetRecordNumber" resultType="String">		
+		SELECT COUNT(*) FROM hb_record where succeed = 1;
+	</select>
+	
+	<!-- 总领取金额 -->
+	<select id="allGetRecordMoney" resultType="String">
+		select round((select sum(money) from hb_record where succeed = 1),1);	
+	</select>
+	
 </mapper>

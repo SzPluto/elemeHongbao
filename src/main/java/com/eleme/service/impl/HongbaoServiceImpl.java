@@ -143,8 +143,8 @@ public class HongbaoServiceImpl implements HongbaoService {
 			HttpPost httpPost = new HttpPost("https://h5.ele.me/restapi/marketing/promotion/weixin/"+avatar);		//提交请求
 			httpPost.setEntity(new StringEntity("{\"group_sn\":\""+sn+"\",\"sign\":\""+elemeKey+"\","+
 					"\"phone\":\""+phoneNum+"\","+
-					"\"weixin_avatar\":\"\","+
-					"\"weixin_username\":\"ꡀ\"}"));	        //设置提交信息
+					"\"weixin_avatar\":\"http://thirdwx.qlogo.cn/mmopen/vi_32/QcicCZ211xlWicHg7YOemhvo4AkK8KhuZzCdgKpYf2zN8cHUQg3qw6UNq7zdLMz8AuAw6KHOfBibicuynQDbmq33OQ/132\","+
+					"\"weixin_username\":\"599753879\"}"));	        //设置提交信息
 	        //返回的信息responseHandler
 	        ResponseHandler<String> responseHandler = response -> {
 	            int status = response.getStatusLine().getStatusCode();

@@ -9,15 +9,19 @@
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/hongbao.css">
-		<title>饿了么一键红包领取</title>
+		<title>饿了么红包,饿了么一键大红包,外卖红包,拼手气红包</title>
+		<meta name="keywords" content="饿了么红包,饿了么一键大红包,外卖优惠券,外卖红包,外卖满减,订餐优惠,外卖优惠,elemehb.com">
+		<meta name="description" content="饿了么一键大红包专注提供饿了么拼手气红包免费领取服务,免费领取饿了么拼手气大红包,外卖订餐更优惠,免费饿了么外卖红包,地址:elemehb.com">
 	</head>
 	<!-- 背景图片 -->
 	<body style="background-image:url(images/background.jpg);">	
 		<div id="preloadedImages" style="background-image:url(images/daydayHongbao.jpg);"></div>  <!-- 预加载天天领红包图片 -->
 		<div class=".container-fluid" align="center">
-			<h1 style="margin-top:7%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
+			<h1 style="margin-top:3%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
 			<div class="highlight border border-secondary" style="margin-top:3%;">
 				<div align="left" style="margin:0px 0px 0px 10px;">
+					<h5 align="center">公告</h5>
+					<hr style="margin:0px 0px 0px 0px;">
 					<a id="advertising"></a>
 				</div>
 			</div>
@@ -41,7 +45,7 @@
 							data-content="1.请不要用要领取的手机号打开红包。
 							<br><br>2.饿了么红包链接开头为：https://h5.ele.me/hongbao/ 
 							<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
-							<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">&nbsp;&nbsp;注意事项&nbsp;&nbsp;
+							<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">注意事项
 							</a>
 							<button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>
 						</div>	
@@ -50,41 +54,114 @@
 				</form>	
 			</div>
 			<!-- 支付宝天天领红包栏 -->
-			<div class="highlight border border-secondary" style="padding:1rem;">
-				<div align="left">
-					<div  class="btn-group " role="group" aria-label="Basic example" >
-						<a tabindex="0" class="btn btn btn-danger" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
-						data-content='<img src="images/daydayHongbao.jpg" >'>天天领红包
-						</a>
-						<a tabindex="0" class="btn btn btn-secondary" data-placement="top" role="button" data-toggle="popover" data-trigger="focus" data-html="true" 
-						data-content="(´-｀ )">←求你了每天扫扫吧
-						</a>
-					</div>
-				</div>
-			</div>
+			
 			<!-- 统计栏 -->
-			<div class="highlight border border-secondary" style="padding:1rem;">
+			<div class="highlight border border-secondary" style="padding:1rem;padding-bottom:0rem;">
 				<div align="left">
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 					 	<li class="nav-item">
-					   		<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">统计</a>
+					   		<a class="nav-link active" id="home-tab" data-toggle="tab" href="#record" role="tab" aria-controls="record" aria-selected="true">统计</a>
 					 	</li>
 						<li class="nav-item">
-							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">捐助</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#donate" role="tab" aria-controls="donate" aria-selected="false">捐助</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">友情链接</a>
+							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#friendUrl" role="tab" aria-controls="friendUrl" aria-selected="false">友链</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="hongbao-tab" data-toggle="tab" href="#hongbao" role="tab" aria-controls="hongbao" aria-selected="false">天天领红包</a>
 						</li>
 					</ul>
-					<div class="tab-content" id="myTabContent" style="padding-top:1rem;padding-left:0.3rem">
-						<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-							6/3  领取金额突破1万
+					<div class="tab-content" id="myTabContent" >
+						<div class="tab-pane fade show active" id="record" role="tabpanel" aria-labelledby="home-tab" >
+							<table class="table">
+							    <thead>
+							    <tr>
+							        <th>条目</th>
+							        <th>数据</th>
+							        <th>单位</th>
+							    </tr>
+							    </thead>
+							    <tbody>
+							    <tr>
+							        <td>今日领取次数</td>
+							        <td id="todayGetRecordNumber">0 </td>
+							        <td>次 </td>
+							    </tr>
+							    <tr>
+							        <td>今日领取金额</td>
+							        <td id="todayGetRecordMoney">0</td>
+							        <td>元</td>
+							    </tr>
+							    <tr>
+							        <td>总领取次数</td>
+							        <td id="allGetRecordNumber">0</td>
+							        <td>次</td>
+							    </tr>
+							    <tr>
+							        <td>总领取金额</td>
+							        <td id="allGetRecordMoney">0</td>
+							        <td>元</td>
+							    </tr>
+							    </tbody>
+							</table>
 						</div>
-						<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-							施工中...
+						<div class="tab-pane fade" id="donate" role="tabpanel" aria-labelledby="profile-tab">
+							<div style="padding:1rem;">
+								<a>注①：只显示最近5条记录</a>
+								<br>
+								<a>注②：该列表并不是实时更新的</a>
+								<br>
+								<a>附：</a><a href="https://github.com/SzPluto/donate" target="view_window">捐助地址</a>
+							</div>
+							<table class="table">
+							    <thead>
+							    <tr>
+							    	<th>日期</th>
+							        <th>昵称</th>
+							        <th>金额</th>
+							        <th>渠道</th>
+							    </tr>
+							    </thead>
+							    <tbody>
+							    <tr>
+							        <td id="time0">13/32</td>
+							        <td id="name0">不愿透露颜色的黑衣大佬1号 </td>
+							        <td id="money0">998 </td>
+							        <td id="source0">现金 </td>
+							    </tr>
+							    <tr>
+							        <td id="time1">13/32</td>
+							        <td id="name1">不愿透露颜色的黑衣大佬2号 </td>
+							        <td id="money1">0.01</td>
+							        <td id="source1">银行打款</td>
+							    </tr>
+							    <tr>
+							        <td id="time2">13/32</td>
+							        <td id="name2">不愿透露颜色的黑衣大佬3号 </td>
+							        <td id="money2">6688</td>
+							        <td id="source2">支票</td>
+							    </tr>
+							    <tr>
+							        <td id="time3">13/32</td>
+							        <td id="name3">不愿透露颜色的黑衣大佬4号 </td>
+							        <td id="money3">8888</td>
+							        <td id="source3">空投</td>
+							    </tr>
+							      <tr>
+							        <td id="time4">13/32</td>
+							        <td id="name4">不愿透露颜色的黑衣大佬5号 </td>
+							        <td id="money4">-10000</td>
+							        <td id="source4">打劫</td>
+							    </tr>
+							    </tbody>
+							</table>
 						</div>
-						<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-							<a href="http://zeiaiquan.com" target="view_window">饿了么红包助手</a>
+						<div class="tab-pane fade" id="friendUrl" role="tabpanel" aria-labelledby="contact-tab" style="padding:1rem;">
+							<a href="/" target="view_window">浏览次数+1</a>
+						</div>
+						<div class="tab-pane fade" id="hongbao" role="tabpanel" aria-labelledby="contact-tab" style="padding:1rem;"  align="center">
+							<img src="images/daydayHongbao.jpg" >
 						</div>
 					</div>
 				</div>		
@@ -95,7 +172,7 @@
 			<div align="center">
 				<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
 				<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
-				<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate">捐助快要饿死的站长</a>
+				<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate" target="view_window">捐助快要饿死的站长</a>
 				<br>
 				<script src="https://s13.cnzz.com/z_stat.php?id=1273833799&web_id=1273833799" language="JavaScript"></script>
 				<input hidden id="check" value="0"></input>
@@ -125,6 +202,61 @@
 		            	$("#advertising").html("前排广告位出租~~饿了么大红包交流群：599753879");
 		            }  
 		        });
+				
+				//加载领取记录
+				$(function () { 
+					$.ajax({  
+			            url:"/getRecord",
+			            type:"GET",  
+			            dataType: 'text',
+			            cache:true,
+			            success:function(data){
+			            	var record=eval("("+data+")"); 
+			            	$("#todayGetRecordNumber").html(record.todayGetRecordNumber);
+			            	$("#todayGetRecordMoney").html(record.todayGetRecordMoney);
+			            	$("#allGetRecordNumber").html(record.allGetRecordNumber);
+			            	$("#allGetRecordMoney").html(record.allGetRecordMoney);
+			            },
+			            error:function() {
+			            	$("#todayGetRecordNumber").html(error);
+			            	$("#todayGetRecordMoney").html(error);
+			            	$("#allGetRecordNumber").html(error);
+			            	$("#allGetRecordMoney").html(error);
+			            }
+			        });
+				});
+				
+				//加载捐献记录
+				$(function () { 
+					$.ajax({  
+			            url:"/getDonate",
+			            type:"GET",  
+			            dataType: 'text',
+			            cache:true,
+			            success:function(data){
+			            	var donate=eval("("+data+")"); 
+			            	for(var i=0;i<5;i++)
+			            	{
+			            		$("#time"+i).html(donate[i].time);
+			            		if(donate[i].name == null){
+			            			$("#name"+i).html("不愿透露姓名的大佬");
+			            		}else{
+			            			$("#name"+i).html(donate[i].name);
+			            		}
+			            		$("#money"+i).html(donate[i].money);
+			            		$("#source"+i).html(donate[i].source);
+			            	}
+			            	//alert(donate[0].time);
+			            	//$("#allGetRecordMoney").html(record.allGetRecordMoney);
+			            },
+			            error:function() {
+			            	$("#todayGetRecordNumber").html(error);
+			            	$("#todayGetRecordMoney").html(error);
+			            	$("#allGetRecordNumber").html(error);
+			            	$("#allGetRecordMoney").html(error);
+			            }
+			        });
+				});
 			});
 			
 			$('#myTab a').on('click', function (e) {
@@ -177,6 +309,11 @@
 			            }
 			        });
 				});
+			}
+			
+			//获取领取记录
+			function getRecord(){
+				
 			}
 
 			//跳转贡献小号页面
