@@ -20,8 +20,10 @@ import org.springframework.stereotype.Service;
 import com.eleme.dao.AdvertisingDao;
 import com.eleme.dao.AltDao;
 import com.eleme.dao.RecordDao;
+import com.eleme.dao.UserDao;
 import com.eleme.service.AltService;
 import com.eleme.service.HongbaoService;
+import com.eleme.service.UserService;
 
 @Service("hongbaoService")
 public class HongbaoServiceImpl implements HongbaoService {
@@ -35,12 +37,18 @@ public class HongbaoServiceImpl implements HongbaoService {
 	private RecordDao recordDao;
 	@Resource
 	private AdvertisingDao advertisingDao;
+	@Resource
+	private UserService userService;
 	
 	int id;
 
 	//领大红包方法
 	@Override
 	public  String getHongbao(String phoneNum,String url) throws IOException{
+		if(userService.checkTodayUseNumber(phoneNum)){
+			insertRecord("0", phoneNum, 0,"每日领取次数耗尽");
+			return "今天的领取次数已经用完了啦，请明天再来吧，cheers~";
+		}
 		int errorUrlExponent = 0;	//错误链接指数，如果该指数等于三表明这是一个异常的链接
 		int suspectedErrorId = 0;	//疑似错误Id
 		int lastResidueNum = 16;	//上一次领取时的剩余次数,默认为16,因为红包最大个数为15
@@ -95,16 +103,18 @@ public class HongbaoServiceImpl implements HongbaoService {
 		        	}
 		        }
 		        if((int) residueNumAndMoney[0] >= 1){	//第二次如果仍然领取失败
+		        	userService.addUseNumber(phoneNum,"0");//领取成功添加一次领取次数
 	        		insertRecord((String)residueNumAndMoney[1],phoneNum,0,"手机已领取过或手机上限");
-		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，亦或是系统错误，本红包下一个为大红包，可以发给你的朋友领哦~");
+		        	return("你的手机已经领取过此红包 或 你的手机号今日领取次数已达上限，亦或是系统错误，本红包下一个为大红包，可以发给你的朋友领哦~坏消息是剩余次数减1,(新用户首日领取次数+1哦，请仔细查看群内教程再使用)");
 	        	}  	
 		        if((int) residueNumAndMoney[0] == 0){		//至此，红包领取成功，返回成功信息
 		        	if(suspectedErrorId != 0 ){		//如果疑似错误id不等于0说明上一次领取错误，将疑似错误Id的领取次数+1
 		        		altService.addErrorNumber(suspectedErrorId);
 		        	}
 		        	insertRecord((String)residueNumAndMoney[1],phoneNum,1,"领取成功");
+		        	userService.addUseNumber(phoneNum,(String)residueNumAndMoney[1]);//领取成功添加一次领取次数
 		        	System.out.println("get bigHongbao succeed!");
-					return ("红包领取成功,红包金额为："+(String)residueNumAndMoney[1]+"元");
+					return ("红包领取成功,红包金额为："+(String)residueNumAndMoney[1]+"元，剩余次数减1");
 		        }
 		        if((int) residueNumAndMoney[0] < 0){		//发生了未知的问题，有可能是被被人抢领了，这种情况几率比较小但是还是有可能的，建议使用自己发的红包。
 		        	insertRecord("0", phoneNum, 0,"未知的错误");
@@ -161,6 +171,7 @@ public class HongbaoServiceImpl implements HongbaoService {
 	        int count = StringUtils.countMatches(responseBody,"\"sns_username\"");
 	        
 	        String luckyNum = getLuckyNum(url);	 //识别第几个为大红包
+
 	        
 	        //识别本次领取红包金额
 	        String hongbaoSum = getHongbaoSum(responseBody);
@@ -174,6 +185,9 @@ public class HongbaoServiceImpl implements HongbaoService {
             System.out.println("--------------------------------------------");
             Object[] rt = {Integer.parseInt(luckyNum) - count,hongbaoSum};
             Object[] rtFalse = {-400,0};   //防止恶意提交链接
+	        if(Integer.parseInt(luckyNum)>12){	//防止恶意填写luckyNum
+            	return rtFalse;
+	        }
             if(count == 0){
             	return rtFalse;
             }else{
