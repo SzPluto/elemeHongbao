@@ -36,6 +36,13 @@ public class AltServiceImpl implements AltService{
 		altDao.addUseNum(id);
 	}
 	
+	//账号使用次数==5
+	@Override
+	public void addUseNumberMax(Integer id) {
+		altDao.addUseNumMax(id);
+	}
+	
+	
 	//查找最大id
 	@Override
 	public Integer findMaxId() {
@@ -58,6 +65,12 @@ public class AltServiceImpl implements AltService{
 	@Override
 	public Integer getUseNum(Integer id) {
 		return altDao.findById(id).getUseNum();
+	}
+	
+	//根据id查询实体获得UseNum
+	@Override
+	public String getPhoneNum(Integer id) {
+		return altDao.findById(id).getPhoneNum();
 	}
 	
 	//将URL格式的Cookie转换为Avatar和ElemeKey
@@ -103,6 +116,9 @@ public class AltServiceImpl implements AltService{
 	//向数据库提交Cookie
 	@Override
 	public String insertCookie(List<String> cookie) throws IOException {
+		if(true){
+			return "暂时停止贡献Cookie";
+		}
 		if(cookie == null){		//如果Cookie为空，返回失败信息
 			return "错误";
 		}

@@ -25,6 +25,11 @@
 		update hb_alt set useNum = useNum + 1 where id=#{id}
 	</update>
 	
+	<update id="addUseNumMax">
+		update hb_alt set useNum = 99999 where id=#{id}
+	</update>
+	
+	
 	<update id="changePhoneNum" >
 		update hb_alt set phoneNum = #{phoneNum} where id = #{id}
 	</update>

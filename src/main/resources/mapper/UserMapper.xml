@@ -15,7 +15,7 @@
 	</select>
 	
 	<insert id="insertUser" >
-		insert into hb_user (phone,useNum,setUseNum,allMoney,allUseNum) values (#{phone},-1,3,0,0);
+		insert into hb_user (phone,useNum,setUseNum,allMoney,allUseNum) values (#{phone},-1,999,0,0);
 	</insert>
 	
 	<update id="addUserNum" >

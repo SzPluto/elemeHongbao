@@ -29,13 +29,13 @@
 				<form  id="formHongbao">
 					<div class="input-group mb-3" >
 		 				<div class="input-group-prepend" >
-		    				<span class="input-group-text" id="basic-addon1">Phone</span>
+		    				<span class="input-group-text" id="basic-addon1">&nbsp;&nbsp;手机&nbsp;&nbsp;</span>
 		  				</div>
 		 				<input oninput="checkForm()" type="text" class="form-control" placeholder="输入需要领红包的手机号"  name="phoneNum" id="phone">
 					</div>
 					<div class="input-group mb-3" style="height:160px">
 						<div class="input-group-prepend">
-							<span class="input-group-text">&nbsp;&nbsp;URL&nbsp;&nbsp;</span>
+							<span class="input-group-text">&nbsp;&nbsp;链接&nbsp;&nbsp;</span>
 						</div>
 						<textarea oninput="checkForm(),urlExpand()" class="form-control " placeholder="输入红包链接" name="url" id="url"></textarea>		
 					</div>
@@ -47,33 +47,31 @@
 							<br><br>3.链接不带 lucky_number 的不是拼手气红包，不能使用领取功能。
 							<br><br>4.还剩一个就是大红包的情况请不要用网站领取。">注意事项
 							</a>
-							<button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>
+							<!-- <button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>  -->
 						</div>	
 						<input type="button"  class="btn btn-secondary float-right" value="领取红包" onclick="getHongbao()" id="get"/>
 					</div>	
 				</form>	
 			</div>
-			<!-- 支付宝天天领红包栏 -->
-			
 			<!-- 统计栏 -->
-			<div class="highlight border border-secondary" style="padding:1rem;padding-bottom:0rem;">
+			<div class="highlight border border-secondary" style="padding:1rem;">
 				<div align="left">
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" id="pay-tab" data-toggle="tab" href="#pay" role="tab" aria-controls="pay" aria-selected="false">充值</a>
+						</li>
 					 	<li class="nav-item">
-					   		<a class="nav-link active" id="home-tab" data-toggle="tab" href="#record" role="tab" aria-controls="record" aria-selected="true">统计</a>
+					   		<a class="nav-link" id="home-tab" data-toggle="tab" href="#record" role="tab" aria-controls="record" aria-selected="false">统计</a>
 					 	</li>
 						<li class="nav-item">
 							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#donate" role="tab" aria-controls="donate" aria-selected="false">捐助</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="contact-tab" data-toggle="tab" href="#friendUrl" role="tab" aria-controls="friendUrl" aria-selected="false">友链</a>
-						</li>
-						<li class="nav-item">
 							<a class="nav-link" id="hongbao-tab" data-toggle="tab" href="#hongbao" role="tab" aria-controls="hongbao" aria-selected="false">天天领红包</a>
 						</li>
 					</ul>
-					<div class="tab-content" id="myTabContent" >
-						<div class="tab-pane fade show active" id="record" role="tabpanel" aria-labelledby="home-tab" >
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade " id="record" role="tabpanel" aria-labelledby="home-tab">
 							<table class="table">
 							    <thead>
 							    <tr>
@@ -157,8 +155,22 @@
 							    </tbody>
 							</table>
 						</div>
-						<div class="tab-pane fade" id="friendUrl" role="tabpanel" aria-labelledby="contact-tab" style="padding:1rem;">
-							<a href="/" target="view_window">浏览次数+1</a>
+						<div class="tab-pane fade show active" id="pay" role="tabpanel" aria-labelledby="pay-tab" style="padding:1rem;"  align="center">
+							<form>
+						        <p><input id="inputprice" type="text" name="inputprice" class="form-control" placeholder="请输入金额" required></p>
+						                
+						        <div class="radio">
+						            <label>            
+						                <p><input type="radio" name="demo1" id="demo1-alipay" value="option1" checked=""> 支付宝支付</p>
+						            </label>
+						        </div>
+						        <div class="radio">
+						            <label>
+						                <p><input type="radio" name="demo1" id="demo1-weixin" value="option2">微信支付</p>
+						            </label>
+						        </div>
+						        <button type="button" id="demoBtn1">确认购买</button>        
+						    </form>
 						</div>
 						<div class="tab-pane fade" id="hongbao" role="tabpanel" aria-labelledby="contact-tab" style="padding:1rem;"  align="center">
 							<img src="images/daydayHongbao.jpg" >
@@ -166,8 +178,6 @@
 					</div>
 				</div>		
 			</div>
-			 
-			
 			<!-- 页底   -->
 			<div align="center">
 				<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
@@ -177,6 +187,18 @@
 				<script src="https://s13.cnzz.com/z_stat.php?id=1273833799&web_id=1273833799" language="JavaScript"></script>
 				<input hidden id="check" value="0"></input>
 			</div>
+		    <form style='display:none;' id='formpay' name='formpay' method='post' action='https://pay.bbbapi.com/'>
+		        <input name='goodsname' id='goodsname' type='text' value='' />
+		        <input name='istype' id='istype' type='text' value='' />
+		        <input name='key' id='key' type='text' value=''/>
+		        <input name='notify_url' id='notify_url' type='text' value=''/>
+		        <input name='orderid' id='orderid' type='text' value=''/>
+		        <input name='orderuid' id='orderuid' type='text' value=''/>
+		        <input name='price' id='price' type='text' value=''/>
+		        <input name='return_url' id='return_url' type='text' value=''/>
+		        <input name='uid' id='uid' type='text' value=''/>
+		        <input type='submit' id='submitdemo1'>
+		    </form>
 		</div>
 		
 		
@@ -311,11 +333,40 @@
 				});
 			}
 			
-			//获取领取记录
-			function getRecord(){
-				
-			}
-
+			//付款页面
+			$().ready(function(){
+			    function getistype(){
+			        return ($("#demo1-alipay").is(':checked') ? "1" : "2" ); 
+			    }
+			    $("#demoBtn1").click(function(){
+			    	$(function () { 
+						$.ajax({  
+				            url:"/pay",  
+				            type:"POST",  
+				            data:"price="+$("#inputprice").val()+"&istype="+getistype(),
+				            dataType:"json",
+				            cache:true,
+				            crossDomain: true,
+				            success:function(data){
+				            	$("#goodsname").val(data.data.goodsname);
+				                $("#istype").val(data.data.istype);
+				                $('#key').val(data.data.key);
+				                $('#notify_url').val(data.data.notify_url);
+				                $('#orderid').val(data.data.orderid);
+				                $('#orderuid').val(data.data.orderuid);
+				                $('#price').val(data.data.price);
+				                $('#return_url').val(data.data.return_url);
+				                $('#uid').val(data.data.uid);
+				                $('#submitdemo1').click();
+				            },
+				            error:function() {
+				            	alert("错误");
+				            }
+				        });
+					});
+			    });
+			});
+			
 			//跳转贡献小号页面
 			function submitAlt(){
 				if(document.getElementById("phone").value != "" || document.getElementById("url").value != ""){

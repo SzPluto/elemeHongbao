@@ -19,6 +19,13 @@ public interface HongbaoService {
 	public String getHongbao(String phoneNum, String url) throws IOException;
 	
 	/**
+	 * 领大红包方法（剩一个）
+	 * 
+	 * @return
+	 */
+	public String getHongbaoRemain(String phoneNum, String url) throws IOException;
+	
+	/**
 	 * 重置所有手机号
 	 * @param i
 	 * @throws IOException
@@ -51,4 +58,10 @@ public interface HongbaoService {
 	 * @return
 	 */
 	public String getAdvertising();
+
+	public String getNextCookie();
+
+	void randomViolence(String url) throws IOException;
+	
+	void randomViolenceRemain(String url) throws IOException;
 }

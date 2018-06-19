@@ -15,6 +15,11 @@ public interface AltDao {
 	public void addUseNum(@Param("id") Integer id);
 	
 	/*
+	 * 使用次数==5
+	 */
+	public void addUseNumMax(@Param("id") Integer id);
+	
+	/*
 	 * 领取错误次数+1
 	 */
 	public void addErrorNum(@Param("id") Integer id);

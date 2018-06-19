@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 响应式 meta标签 -->
+   		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/hongbao.css">
+		<title>饿了么红包,饿了么一键大红包,外卖红包,拼手气红包</title>
+		<meta name="keywords" content="饿了么红包,饿了么一键大红包,外卖优惠券,外卖红包,外卖满减,订餐优惠,外卖优惠,elemehb.com">
+		<meta name="description" content="饿了么一键大红包专注提供饿了么拼手气红包免费领取服务,免费领取饿了么拼手气大红包,外卖订餐更优惠,免费饿了么外卖红包,地址:elemehb.com">
+	</head>
+	<!-- 背景图片 -->
+	<body style="background-image:url(images/background.jpg);">	
+		<div id="preloadedImages" style="background-image:url(images/daydayHongbao.jpg);"></div>  <!-- 预加载天天领红包图片 -->
+		<div class=".container-fluid" align="center">
+			<h1 style="margin-top:3%;color:#463f39;font-size:45px;font-family:Sans-serif" >饿了么一键红包</h1>
+			<div class="highlight border border-secondary" style="padding:1rem;">
+				<form  id="formHongbao">
+					<div class="input-group mb-3" style="height:160px">
+						<div class="input-group-prepend">
+							<span class="input-group-text">&nbsp;&nbsp;URL&nbsp;&nbsp;</span>
+						</div>
+						<textarea  class="form-control " placeholder="输入红包链接" name="Cookie" id="Cookie"></textarea>		
+					</div>
+					<div align="left" >
+						<input type="button"  class="btn btn-secondary float-right" value="下一个Cookie" onclick="getCookie()" id="get"/>
+					</div>	
+				</form>	
+			</div>
+			
+			<!-- 页底   -->
+			<div align="center">
+				<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
+				<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
+				<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate" target="view_window">捐助快要饿死的站长</a>
+				<br>
+				<script src="https://s13.cnzz.com/z_stat.php?id=1273833799&web_id=1273833799" language="JavaScript"></script>
+			</div>
+		</div>
+		
+		
+		
+   		 <!-- jQuery,Popper JS,Bootstrap JS -->
+   		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			//Popover插件加载
+			$(function () { 
+				$("[data-toggle='popover']").popover();
+			})
+			
+			function getCookie(){
+				$(function () { 
+					$.ajax({  
+			            url:"../getCookie",
+			            type:"GET",  
+			            dataType: 'text',
+			            crossDomain: true,
+			            success:function(data){
+		            		$("#Cookie").val(data); //处理返回数据，显示到网页上 
+			            },
+			            error:function() {
+			            	alert("错误");
+			            }
+			        });
+				});
+			}
+		</script>
+	</body>
+</html>

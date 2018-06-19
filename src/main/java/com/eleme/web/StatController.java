@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.eleme.service.StatService;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +14,10 @@ public class StatController {
 	@Autowired
 	private StatService statService;
 
-    //网页提交Cookie
+    //获取记录
 	@RequestMapping(value = "/getRecord",produces = "application/json;charset=UTF-8")
 	@ResponseBody
-    public Map<String,Object> getRecord() throws IOException {
+    public Map<String,Object> getRecord() throws Exception {
 		Map<String,Object> massage = new HashMap<String,Object>();  
 		massage.put("todayGetRecordNumber", statService.todayGetRecordNumber());
 		massage.put("todayGetRecordMoney", statService.todayGetRecordMoney());

@@ -23,6 +23,13 @@ public interface AltService {
 	public void addUseNumber(Integer id);
 	
 	/**
+	 * 使用次数==5
+	 * 
+	 * @return
+	 */
+	public void addUseNumberMax(Integer id);
+	
+	/**
 	 * 领取错误次数+1
 	 * 
 	 * @return
@@ -55,6 +62,13 @@ public interface AltService {
 	 * @return
 	 */
 	public Integer getUseNum(Integer id);
+
+	/**
+	 * 根据id查询实体获得PhoneNum
+	 * @param id
+	 * @return
+	 */
+	public String getPhoneNum(Integer id);
 	
 	/**
 	 * 将URL格式的Cookie转换为Avatar和ElemeKey
