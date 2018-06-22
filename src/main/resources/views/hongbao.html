@@ -49,7 +49,7 @@
 							</a>
 							<!-- <button type="button" class="btn btn-secondary float-right" onclick="submitAlt()">贡献小号</button>  -->
 						</div>	
-						<input type="button"  class="btn btn-secondary float-right" value="领取红包" onclick="getHongbao()" id="get"/>
+						<input disabled="true" type="button"  class="btn btn-secondary float-right" value="领取红包" onclick="getHongbao()" id="get"/>
 					</div>	
 				</form>	
 			</div>
@@ -155,21 +155,36 @@
 							    </tbody>
 							</table>
 						</div>
-						<div class="tab-pane fade show active" id="pay" role="tabpanel" aria-labelledby="pay-tab" style="padding:1rem;"  align="center">
+						<div class="tab-pane fade show active" id="pay" role="tabpanel" aria-labelledby="pay-tab" style="padding-top:1rem;"  align="center">
 							<form>
-						        <p><input id="inputprice" type="text" name="inputprice" class="form-control" placeholder="请输入金额" required></p>
-						                
-						        <div class="radio">
+								<div class="input-group mb-3" >
+					 				<div class="input-group-prepend" >
+					    				<span class="input-group-text" id="basic-addon1">&nbsp;&nbsp;手机&nbsp;&nbsp;</span>
+					  				</div>
+										<input oninput="checkPayPhone()" class="form-control" type="text" placeholder="请输入要充值的手机号" id="payPhone">
+								</div>
+								<div class="input-group mb-3" >
+					 				<div class="input-group-prepend" >
+					    				<span class="input-group-text" id="basic-addon1">目前比例：20点数/元</span>
+					  				</div>
+									<select class="form-control" id="priceOption">
+										<option value="1">1元</option>
+										<option value="5">5元</option>
+										<option value="10">10元</option>
+									</select>
+								</div>				                
+						       	<div class="radio" align="left">
 						            <label>            
-						                <p><input type="radio" name="demo1" id="demo1-alipay" value="option1" checked=""> 支付宝支付</p>
+						                <p><input type="radio" name="demo1" id="demo1-alipay" value="option1" checked=""> 支付宝支付
+						                <input type="radio" name="demo1" id="demo1-weixin" value="option2">微信支付</p>
 						            </label>
+						            <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+							            <button disabled="true" type="button" id="demoBtn2" class="btn btn-secondary " onclick="checkBalance()">余额查询</button> 
+							            <button disabled="true" type="button" id="demoBtn1" class="btn btn-danger ">提交订单</button> 
+							        </div>
+							        <p><hr style="margin:0px 0px 0px 0px;"></p>
+						      		<a>充值后请自行查询余额，如果有问题请立刻联系群主</a>
 						        </div>
-						        <div class="radio">
-						            <label>
-						                <p><input type="radio" name="demo1" id="demo1-weixin" value="option2">微信支付</p>
-						            </label>
-						        </div>
-						        <button type="button" id="demoBtn1">确认购买</button>        
 						    </form>
 						</div>
 						<div class="tab-pane fade" id="hongbao" role="tabpanel" aria-labelledby="contact-tab" style="padding:1rem;"  align="center">
@@ -181,7 +196,7 @@
 			<!-- 页底   -->
 			<div align="center">
 				<h6 style="color:#463f39">大型同性交友社区 : <a href="https://github.com/SzPluto/elemeHongbao">点击这里</a></h6>
-				<h6 style="color:#463f39">本站仅供学习使用，禁止用作任何商业用途</h6>
+				<h6 style="color:#463f39">本站仅供学习使用，禁止用作违法用途</h6>
 				<a  style="text-decoration:line-through;" href="https://github.com/SzPluto/donate" target="view_window">捐助快要饿死的站长</a>
 				<br>
 				<script src="https://s13.cnzz.com/z_stat.php?id=1273833799&web_id=1273833799" language="JavaScript"></script>
@@ -297,7 +312,7 @@
 		           xmlHttp.open("post", "/getHongbao", false);
 		           xmlHttp.onreadystatechange=function(){
 						if(xmlHttp.readyState==4 && xmlHttp.status==200){
-			            	alert(xmlHttp.responseText+"\n\n具体金额请以实际到账金额为准");
+			            	alert(xmlHttp.responseText+"\n\n请注意：本站不保证领取到大红包\n具体金额请以实际到账金额为准");
 			            }
 		            }
 		            xmlHttp.send(form);
@@ -333,6 +348,25 @@
 				});
 			}
 			
+			//查询余额
+			function checkBalance(){
+				$(function () { 
+					$.ajax({  
+			            url:"/checkBalance",  
+			            type:"Post",  
+			            data:"phone="+payPhone.value,
+			            dataType: 'text',
+			            cache:true,
+			            success:function(data){
+			            	alert("剩余点数为："+data);
+			            },
+			            error:function() {
+			            	alert("后台未查询到此账号记录");
+			            }
+			        });
+				});
+			}
+			
 			//付款页面
 			$().ready(function(){
 			    function getistype(){
@@ -340,10 +374,11 @@
 			    }
 			    $("#demoBtn1").click(function(){
 			    	$(function () { 
+			    		var options=$("#priceOption option:selected"); //获取选中的项
 						$.ajax({  
 				            url:"/pay",  
 				            type:"POST",  
-				            data:"price="+$("#inputprice").val()+"&istype="+getistype(),
+				            data:"price="+options.val()+"&istype="+getistype()+"&orderuid="+payPhone.value,
 				            dataType:"json",
 				            cache:true,
 				            crossDomain: true,
@@ -391,6 +426,24 @@
 				}else{
 					warningColor("phone");
 					return false;
+				}	
+			}
+			
+			//判断支付手机号格式
+			function checkPayPhone(){
+				var v = document.getElementById("payPhone").value;
+				if(!isNaN(v) && v.length == 11 && v[0]==1){	//如果是数字并且长度等于11并且第一个数字为1
+					normalColor("payPhone");
+					document.getElementById("demoBtn1").disabled=false; 
+					document.getElementById("demoBtn2").disabled=false; 
+				}else if(v == ""){
+					normalColor("payPhone");
+					document.getElementById("demoBtn1").disabled=true; 
+					document.getElementById("demoBtn2").disabled=true; 
+				}else{
+					warningColor("payPhone");
+					document.getElementById("demoBtn1").disabled=true; 
+					document.getElementById("demoBtn2").disabled=true; 
 				}	
 			}
 			

@@ -1,7 +1,6 @@
 package com.eleme.dao;
 
 import java.util.Date;
-
 import org.apache.ibatis.annotations.Param;
 
 public interface RecordDao {

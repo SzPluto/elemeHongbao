@@ -9,19 +9,24 @@ public interface UserDao {
 	 * @return
 	 */
 	public String checkUser(@Param("phone") String phone);
-
-	/**
-	 * 查找今日领取次数
-	 * @return
-	 */
-	public int getTodayUseNumber(@Param("phone") String phone);
 	
 	/**
-	 * 查找设定领取次数
+	 * 获取余额
 	 * @return
 	 */
-	public int getSetUseNumber(@Param("phone") String phone);
+	public int getBalance(@Param("phone") String phone);
 	
+	/**
+	 * 增加余额
+	 * @return
+	 */
+	public void addBalance(@Param("phone") String phone,@Param("price") String price);
+	
+	/**
+	 * 减少余额
+	 * @return
+	 */
+	public void reduceBalance(@Param("phone") String phone,@Param("time") Integer time);
 	
 	/**
 	 * 新建一条用户记录

@@ -5,21 +5,25 @@
 	<select id="checkUser" resultType="String">
 		select phone from hb_user where phone = #{phone};
 	</select>
-
-	<select id="getTodayUseNumber" resultType="Integer">
-		select useNum from hb_user where phone = #{phone};
-	</select>
 	
-	<select id="getSetUseNumber" resultType="Integer">
-		select setUseNum from hb_user where phone = #{phone};
+	<select id="getBalance" resultType="Integer">
+		select balance from hb_user where phone = #{phone};
 	</select>
 	
 	<insert id="insertUser" >
-		insert into hb_user (phone,useNum,setUseNum,allMoney,allUseNum) values (#{phone},-1,999,0,0);
+		insert into hb_user (phone,balance,allMoney,allUseNum) values (#{phone},5,0,0);
 	</insert>
 	
 	<update id="addUserNum" >
-		update hb_user set useNum = useNum + 1,allMoney = allMoney + #{money},allUseNum = allUseNum + 1 where phone = #{phone};
+		update hb_user set allMoney = allMoney + #{money},allUseNum = allUseNum + 1 where phone = #{phone};
+	</update>
+	
+	<update id="addBalance" >
+		update hb_user set balance = balance + #{price} * 20 where phone = #{phone};
+	</update>
+	
+	<update id="reduceBalance" >
+		update hb_user set balance = balance - #{time} where phone = #{phone};
 	</update>
 	
 </mapper>

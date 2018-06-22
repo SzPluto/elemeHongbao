@@ -12,17 +12,17 @@ public class UserServiceImpl implements UserService{
 	private UserDao userDao;
 	
 	/**
-	 * 检测该用户是否超过领取上限，未超过返回false，超过返回true，如果数据库中没有这条数据则新增一条
+	 * 检测该用户是否欠费，没欠费返回false，欠费返回true，如果数据库中没有这条数据则新增一条
 	 */
 	@Override
-	public boolean checkTodayUseNumber(String phone) {
+	public boolean checkBalance(String phone) {
 		if(userDao.checkUser(phone) == null){
 			userDao.insertUser(phone);
 		}
-		if(userDao.getTodayUseNumber(phone)<userDao.getSetUseNumber(phone)){
-			return false;
-		}else{
+		if(userDao.getBalance(phone)<=0){
 			return true;
+		}else{
+			return false;
 		}
 	}
 	
