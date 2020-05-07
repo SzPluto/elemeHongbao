@@ -21,6 +21,7 @@
 		from hb_alt where id=#{id}
 	</select>
 	
+	
 	<update id="addUseNum">
 		update hb_alt set useNum = useNum + 1 where id=#{id}
 	</update>
